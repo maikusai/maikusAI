@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-bg: var(--theme-bg);
+  --color-brand-bg-alt: var(--theme-bg-alt);
+  --color-brand-text: var(--theme-text);
+  --color-brand-text-muted: var(--theme-text-muted);
+  --color-brand-border: var(--theme-border);
+  --color-brand-glass: var(--theme-glass);
+
+  --color-accent-blue: var(--theme-accent-blue);
+  --color-accent-purple: var(--theme-accent-purple);
+  --color-accent-red: var(--theme-accent-red);
+  --color-accent-green: var(--theme-accent-green);
+}
+
+@layer base {
+  :root {
+    --theme-bg: #0B0F19;
+    --theme-bg-alt: #111122;
+    --theme-text: #ffffff;
+    --theme-text-muted: #9ca3af;
+    --theme-border: rgba(255, 255, 255, 0.1);
+    --theme-glass: rgba(255, 255, 255, 0.05);
+
+    --theme-accent-blue: #00f0ff;
+    --theme-accent-purple: #9b51e0;
+    --theme-accent-red: #f87171;
+    /* red-400 */
+    --theme-accent-green: #4ade80;
+    /* green-400 */
+
+    --theme-grid-opacity: 0.8;
+  }
+
+  .light {
+    --theme-bg: #f8fafc;
+    --theme-bg-alt: #e2e8f0;
+    --theme-text: #0f172a;
+    --theme-text-muted: #475569;
+    --theme-border: rgba(0, 0, 0, 0.1);
+    --theme-glass: rgba(255, 255, 255, 0.7);
+
+    --theme-accent-blue: #0369a1;
+    /* darker blue for light mode contrast */
+    --theme-accent-purple: #6b21a8;
+    /* darker purple for light mode contrast */
+
+    --theme-grid-opacity: 0.6;
+  }
+
+  :root, .light {
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+  }
+
+  body {
+    @apply bg-brand-bg text-brand-text font-sans antialiased selection:bg-accent-blue/30 transition-colors duration-500;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-brand-glass backdrop-blur-lg border border-brand-border shadow-xl;
+  }
+
+  .glass-card {
+    @apply bg-brand-glass backdrop-blur-lg border border-brand-border shadow-xl rounded-2xl p-6 transition-all duration-300 hover:border-accent-blue/30 hover:bg-brand-glass;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-accent-purple;
+  }
+
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center px-8 py-3 text-sm font-semibold text-white transition-all duration-300 bg-black border border-transparent rounded-full overflow-hidden hover:scale-105 hover:-translate-y-1 hover:shadow-[0_10px_40px_-10px_#00f0ff80];
+  }
+
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-[-2px] -z-10 rounded-full bg-gradient-to-r from-accent-blue to-accent-purple opacity-70 blur-md transition-all duration-300;
+  }
+
+  .btn-primary:hover::before {
+    @apply opacity-100 blur-xl inset-[-4px];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-8 py-3 text-sm font-semibold text-brand-text transition-all duration-300 border border-brand-border rounded-full hover:bg-brand-glass hover:border-accent-purple hover:dark:text-white hover:scale-105 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_#9b51e04d];
+  }
+}
