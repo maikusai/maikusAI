@@ -89,4 +89,12 @@
   .btn-secondary {
     @apply inline-flex items-center justify-center px-8 py-3 text-sm font-semibold text-brand-text transition-all duration-300 border border-brand-border rounded-full hover:bg-brand-glass hover:border-accent-purple hover:dark:text-white hover:scale-105 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_#9b51e04d];
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

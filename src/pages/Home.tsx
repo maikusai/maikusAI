@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { ArrowRight, Bot, Zap, Clock, Users, Target, ShieldCheck, Mail, MessageSquare, Workflow, BrainCircuit } from 'lucide-react';
+import { ArrowRight, Bot, Zap, Clock, Users, Target, ShieldCheck, Mail, MessageSquare, Workflow, BrainCircuit, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
@@ -192,39 +192,47 @@ const Home = () => {
                             { icon: Bot, title: "Website AI Chatbots", desc: "Next-gen intelligent bots that speak your brand voice and close sales 24/7." },
                             { icon: MessageSquare, title: "Social Media Automation", desc: "AI-generated content schedules, auto-replies to DMs, and community management." },
                             { icon: Workflow, title: "CRM & Workflow Automation", desc: "Connect thousands of apps. Data flows instantly where it needs to go." },
-                            { icon: BrainCircuit, title: "Custom AI Tools", desc: "Bespoke internal dashboards and AI assistants trained on your proprietary data." }
-                        ].map((item, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: idx * 0.1, duration: 0.5 }}
-                                className="glass-card relative overflow-hidden group"
-                            >
-                                <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                                    <item.icon className="w-24 h-24 text-accent-blue" />
-                                </div>
-                                <div className="relative z-10 w-12 h-12 rounded-lg bg-gradient-to-br from-accent-blue/20 to-accent-purple/20 flex items-center justify-center text-accent-blue mb-6 border border-brand-border">
-                                    <item.icon className="w-6 h-6" />
-                                </div>
-                                <h3 className="text-xl font-bold text-brand-text mb-3 relative z-10">{item.title}</h3>
-                                <p className="text-brand-text-muted mb-6 relative z-10">{item.desc}</p>
-                                <Link
-                                    to={
-                                        item.title === "AI Email Automation" ? "/services/ai-email-automation" :
-                                            item.title === "Smart Lead Generation Funnels" ? "/services/leadgen" :
-                                                item.title === "Website AI Chatbots" ? "/services/chatbots" :
-                                                    item.title === "Social Media Automation" ? "/services/social-media" :
-                                                        item.title === "CRM & Workflow Automation" ? "/services/workflows" :
-                                                            item.title === "Custom AI Tools" ? "/services/custom" : "/services"
-                                    }
-                                    className="inline-flex items-center text-accent-blue font-semibold hover:text-accent-purple transition-colors relative z-10"
+                            { icon: BrainCircuit, title: "Custom AI Tools", desc: "Bespoke internal dashboards and AI assistants trained on your proprietary data." },
+                            { icon: Phone, title: "AI Voice Receptionist", desc: "24/7 HIPAA-ready AI that answers calls, books appointments, and captures leads — on autopilot." }
+                        ].map((item, idx) => {
+                            const linkPath = item.title === "AI Email Automation" ? "/services/ai-email-automation" :
+                                item.title === "Smart Lead Generation Funnels" ? "/services/leadgen" :
+                                    item.title === "Website AI Chatbots" ? "/services/chatbots" :
+                                        item.title === "Social Media Automation" ? "/services/social-media" :
+                                            item.title === "CRM & Workflow Automation" ? "/services/workflows" :
+                                                item.title === "Custom AI Tools" ? "/services/custom" :
+                                                    item.title === "AI Voice Receptionist" ? "/services/ai-receptionist" : "/services";
+
+                            return (
+                                <motion.div
+                                    key={idx}
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: idx * 0.1, duration: 0.5 }}
+                                    className="relative"
                                 >
-                                    Learn More <ArrowRight className="w-4 h-4 ml-2" />
-                                </Link>
-                            </motion.div>
-                        ))}
+                                    <Link
+                                        to={linkPath}
+                                        className="glass-card flex flex-col h-full relative overflow-hidden group hover:border-accent-blue/50 transition-all duration-500 block"
+                                    >
+                                        <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-30 group-hover:scale-110 transition-all duration-500">
+                                            <item.icon className="w-24 h-24 text-accent-blue" />
+                                        </div>
+                                        <div className="relative z-10 w-12 h-12 rounded-lg bg-gradient-to-br from-accent-blue/20 to-accent-purple/20 flex items-center justify-center text-accent-blue mb-6 border border-brand-border group-hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] group-hover:border-accent-blue/40 transition-all">
+                                            <item.icon className="w-6 h-6" />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-brand-text mb-3 relative z-10 group-hover:text-accent-blue transition-colors">{item.title}</h3>
+                                        <p className="text-brand-text-muted mb-6 relative z-10 flex-grow">{item.desc}</p>
+                                        <div
+                                            className="inline-flex items-center text-accent-blue font-semibold hover:text-accent-purple transition-colors relative z-10 mt-auto"
+                                        >
+                                            Learn More <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                                        </div>
+                                    </Link>
+                                </motion.div>
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -261,29 +269,68 @@ const Home = () => {
                 <div className="container mx-auto px-6 lg:px-12">
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-16 text-center text-brand-text">Real <span className="text-gradient">Results</span></h2>
 
-                    <div className="max-w-4xl mx-auto glass-card p-6 md:p-10 bg-gradient-to-br from-brand-bg to-brand-bg-alt flex flex-col md:flex-row items-center gap-10">
-                        <div className="flex-1">
-                            <div className="text-sm text-accent-blue font-bold tracking-wider uppercase mb-2">Case Study - Dental Clinic</div>
-                            <h3 className="text-3xl font-bold text-brand-text mb-6 leading-tight">Increased Appointments by <span className="text-accent-green">42%</span> Using AI Automation.</h3>
+                    <div className="max-w-5xl mx-auto relative group">
+                        {/* Decorative glow behind the card */}
+                        <div className="absolute -inset-4 bg-gradient-to-r from-accent-blue/10 via-accent-purple/10 to-accent-blue/10 blur-2xl rounded-[3rem] opacity-50 group-hover:opacity-100 transition-opacity"></div>
 
-                            <div className="flex gap-8 mb-8">
-                                <div>
-                                    <div className="text-sm text-brand-text-muted mb-1">Before AI</div>
-                                    <div className="text-xl font-bold text-brand-text">12 Hrs/wk</div>
-                                    <div className="text-xs text-brand-text-muted mt-1">on follow-ups</div>
+                        <div className="relative glass-card p-0 overflow-hidden bg-brand-bg/50 border border-brand-border group-hover:border-accent-blue/30 transition-all duration-700">
+                            <div className="flex flex-col md:flex-row items-stretch">
+                                {/* Visual Side */}
+                                <div className="w-full md:w-2/5 relative overflow-hidden bg-brand-bg-alt flex flex-col items-center justify-center p-8 md:p-12 border-b md:border-b-0 md:border-r border-brand-border">
+                                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent-blue/10 via-transparent to-transparent"></div>
+                                    <div className="relative z-10 text-center">
+                                        <div className="text-5xl font-extrabold text-accent-blue mb-2 drop-shadow-[0_0_15px_rgba(0,240,255,0.4)]">+42%</div>
+                                        <div className="text-brand-text-muted font-bold uppercase tracking-widest text-xs">More Appointments</div>
+                                        <div className="mt-8 flex items-center justify-center gap-4">
+                                            <div className="text-center">
+                                                <div className="text-2xl font-bold text-brand-text">12h</div>
+                                                <div className="text-[10px] text-brand-text-muted uppercase">Manual</div>
+                                            </div>
+                                            <ArrowRight className="w-5 h-5 text-brand-border" />
+                                            <div className="text-center">
+                                                <div className="text-2xl font-bold text-accent-blue">0h</div>
+                                                <div className="text-[10px] text-accent-blue uppercase font-bold tracking-tight">AI Powered</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Abstract pulse animation */}
+                                    <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-accent-blue/10 blur-3xl rounded-full animate-pulse"></div>
                                 </div>
-                                <div className="w-[1px] bg-brand-border"></div>
-                                <div>
-                                    <div className="text-sm text-brand-text-muted mb-1">After AI</div>
-                                    <div className="text-xl font-bold text-accent-green">0 Hrs/wk</div>
-                                    <div className="text-xs text-brand-text-muted mt-1">100% automated</div>
+
+                                {/* Content Side */}
+                                <div className="flex-1 p-8 md:p-12 flex flex-col justify-center">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/20 text-accent-blue text-[10px] font-bold tracking-widest uppercase mb-6 self-start">
+                                        Case Study: Healthcare
+                                    </div>
+                                    <h3 className="text-2xl md:text-3xl font-bold text-brand-text mb-6 leading-tight">
+                                        We Automated Follow-ups for a <span className="text-gradient">Tier 1 Dental Clinic.</span>
+                                    </h3>
+
+                                    <div className="space-y-6 mb-8">
+                                        <p className="text-brand-text-muted leading-relaxed">
+                                            Spent years losing patients to voicemail and slow replies. Maikus AI deployed an autonomous booking system that qualified and scheduled patients within 2 minutes of inquiry.
+                                        </p>
+                                    </div>
+
+                                    <div className="relative">
+                                        <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-accent-blue to-accent-purple rounded-full"></div>
+                                        <blockquote className="pl-6 italic text-lg text-brand-text group/quote">
+                                            <span className="text-2xl text-accent-blue font-serif leading-none">"</span>
+                                            We literally stopped worrying about missed leads. The AI bot talks to patients and books them straight into our calendar.
+                                            <footer className="mt-4 not-italic flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-full bg-brand-bg border border-brand-border overflow-hidden">
+                                                    <div className="w-full h-full bg-gradient-to-br from-brand-bg-alt to-brand-border flex items-center justify-center text-xs font-bold text-brand-text-muted">SJ</div>
+                                                </div>
+                                                <div>
+                                                    <div className="font-bold text-brand-text text-sm underline decoration-accent-blue/30 underline-offset-4">Dr. Sarah Jenkins</div>
+                                                    <div className="text-[10px] text-brand-text-muted uppercase font-bold tracking-wider">Clinic Owner</div>
+                                                </div>
+                                            </footer>
+                                        </blockquote>
+                                    </div>
                                 </div>
                             </div>
-
-                            <blockquote className="border-l-4 border-accent-blue pl-4 mb-6">
-                                <p className="italic text-brand-text-muted">"We literally stopped worrying about missed leads. The AI bot talks to patients and books them straight into our calendar."</p>
-                                <footer className="mt-2 text-sm text-brand-text-muted">— Dr. Sarah Jenkins, Owner</footer>
-                            </blockquote>
                         </div>
                     </div>
                 </div>
@@ -316,7 +363,10 @@ const Home = () => {
             <section className="py-24 bg-brand-bg-alt relative border-t border-brand-border">
                 <div className="container mx-auto px-6 lg:px-12 text-center">
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-brand-text">Simple <span className="text-gradient">Pricing</span></h2>
-                    <p className="text-brand-text-muted text-lg mb-16">High-ROI systems that pay for themselves in weeks.</p>
+                    <p className="text-brand-text-muted text-lg mb-4">High-ROI systems that pay for themselves in weeks.</p>
+                    <Link to="/services/ai-receptionist#pricing" className="inline-flex items-center gap-2 text-accent-blue font-semibold hover:text-accent-purple transition-colors mb-12 text-sm">
+                        View AI Voice Receptionist plans <ArrowRight className="w-4 h-4" />
+                    </Link>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                         {/* Starter */}

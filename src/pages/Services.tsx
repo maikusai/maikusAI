@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Zap, MessageSquare, Workflow, BrainCircuit, ArrowRight, CheckCircle2, Play, X } from 'lucide-react';
+import { Mail, Zap, MessageSquare, Workflow, BrainCircuit, Phone, ArrowRight, CheckCircle2, Play, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Services = () => {
@@ -60,6 +60,15 @@ const Services = () => {
             solution: "Bespoke internal AI applications, tools, and dashboards built entirely for your specific needs.",
             benefits: ["Full data ownership & privacy", "Tailored to your exact SOPs", "Scalable infrastructure"],
             useCase: "A consulting firm got a custom internal research tool that summarized 100-page reports in seconds."
+        },
+        {
+            id: "ai-receptionist",
+            icon: Phone,
+            title: "AI Voice Receptionist",
+            problem: "Your front desk misses calls after hours, loses leads to voicemail, and costs you a full-time salary every month.",
+            solution: "We deploy a 24/7 HIPAA-ready AI receptionist on your phone line. It books appointments, answers FAQs, and captures every lead — automatically.",
+            benefits: ["Never miss an inbound call", "HIPAA-compliant infrastructure", "Setup fee + predictable monthly plan"],
+            useCase: "A dental clinic deployed an AI receptionist and booked 22 extra appointments in the first month — at zero extra staffing cost."
         }
     ];
 
@@ -72,16 +81,32 @@ const Services = () => {
                         We don't sell generic ChatGPT prompts. We engineer robust, enterprise-grade AI systems that run your operations automatically.
                     </p>
                 </div>
+                {/* Service Quick Navigation */}
+                <div className="sticky top-20 z-40 py-4 mb-20 -mx-6 px-6 bg-brand-bg/80 backdrop-blur-md border-y border-brand-border overflow-x-auto no-scrollbar">
+                    <div className="flex items-center gap-4 md:justify-center min-w-max pb-2 md:pb-0">
+                        {services.map((service) => (
+                            <button
+                                key={`nav-${service.id}`}
+                                onClick={() => document.getElementById(service.id)?.scrollIntoView({ behavior: 'smooth' })}
+                                className="flex items-center gap-2 px-4 py-2 rounded-full border border-brand-border bg-brand-bg-alt hover:border-accent-blue/50 hover:bg-accent-blue/5 transition-all group shrink-0"
+                            >
+                                <service.icon className="w-4 h-4 text-brand-text-muted group-hover:text-accent-blue transition-colors" />
+                                <span className="text-sm font-medium text-brand-text-muted group-hover:text-brand-text transition-colors">{service.title}</span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
 
-                <div className="flex flex-col gap-20">
+                <div className="flex flex-col gap-32">
                     {services.map((service, index) => (
                         <motion.div
                             key={service.id}
+                            id={service.id}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 0.6 }}
-                            className={`flex flex-col md:flex-row gap-12 items-center ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}
+                            className={`flex flex-col md:flex-row gap-12 items-center scroll-mt-32 ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}
                         >
                             <div className="flex-1">
                                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent-blue/10 to-accent-purple/10 flex items-center justify-center border border-white/5 mb-6">
