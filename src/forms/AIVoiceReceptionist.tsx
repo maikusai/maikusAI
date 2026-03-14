@@ -321,89 +321,142 @@ const AIVoiceReceptionist = () => {
         const clientHtmlBody = `
 <!DOCTYPE html>
 <html>
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#f4f4f7;font-family:'Segoe UI',Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f7;padding:40px 0;">
-    <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.10);">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    @media screen and (max-width: 600px) {
+      .content-padding { padding: 24px 20px !important; }
+      .header-title { font-size: 22px !important; }
+      .service-table { display: block !important; }
+      .service-cell { display: block !important; width: 100% !important; text-align: left !important; padding: 10px 0 !important; }
+      .plan-badge { text-align: left !important; margin-top: 10px; }
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f4f7;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f7;padding:20px 0;">
+    <tr>
+      <td align="center">
+        <!-- Main Container -->
+        <table class="container" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;width:95%;border-radius:12px;overflow:hidden;background-color:#ffffff;box-shadow:0 10px 30px rgba(0,0,0,0.08);">
+          
+          <!-- Top Gradient Accent -->
+          <tr><td style="padding:0;"><div style="height:6px;background:linear-gradient(90deg,#7c3aed,#00c2ff);"></div></td></tr>
 
-        <!-- Top accent strip -->
-        <tr><td style="padding:0;"><div style="height:5px;background:linear-gradient(90deg,#6c3fc5,#00c2ff);"></div></td></tr>
+          <!-- Header Section -->
+          <tr>
+            <td class="content-padding" style="padding:40px 40px 30px;text-align:center;border-bottom:1px solid #f0f0f5;">
+              <p style="margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7c3aed;">Maikus AI Solutions</p>
+              <h1 class="header-title" style="margin:0 0 12px;font-size:28px;font-weight:800;color:#111827;line-height:1.2;">Request Received</h1>
+              <p style="margin:0;font-size:16px;color:#4b5563;">Hi ${clientName}, we've received your request for an AI Receptionist.</p>
+            </td>
+          </tr>
 
-        <!-- Header -->
-        <tr>
-          <td style="background:#ffffff;padding:40px 40px 24px;text-align:center;border-bottom:1px solid #e5e7eb;">
-            <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#7c3aed;">Maikus AI Solutions</p>
-            <h1 style="margin:0 0 10px;font-size:26px;font-weight:800;color:#111827;">Your Request Has Been Received</h1>
-            <p style="margin:0;font-size:15px;color:#6b7280;">Dear ${clientName}, thank you for choosing Maikus AI.</p>
-          </td>
-        </tr>
+          <!-- Service Highlights -->
+          <tr>
+            <td style="background-color:#faf9ff;border-bottom:1px solid #ede9fe;padding:20px 40px;" class="content-padding">
+              <table width="100%" cellpadding="0" cellspacing="0" class="service-table">
+                <tr>
+                  <td class="service-cell" style="vertical-align: middle;">
+                    <p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:1px;">Service Requested</p>
+                    <p style="margin:0;font-size:19px;font-weight:800;color:#1e1b4b;">AI Voice Receptionist</p>
+                  </td>
+                  <td class="service-cell plan-badge" align="right" style="vertical-align: middle;">
+                    <div style="background-color:#7c3aed;border-radius:8px;padding:8px 16px;display:inline-block;box-shadow:0 4px 10px rgba(124,58,237,0.2);">
+                      <p style="margin:0;font-size:10px;color:#ede9fe;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Plan Selected</p>
+                      <p style="margin:2px 0 0;font-size:15px;color:#ffffff;font-weight:800;">${chosenPlan}</p>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
 
-        <!-- Service confirmation banner -->
-        <tr>
-          <td style="background:#ede9fe;padding:18px 40px;border-bottom:1px solid #ddd6fe;">
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td>
-                  <p style="margin:0 0 2px;font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:1px;">Service Requested</p>
-                  <p style="margin:0;font-size:18px;font-weight:800;color:#3b0764;">AI Voice Receptionist</p>
-                </td>
-                <td align="right">
-                  <div style="background:#7c3aed;border-radius:6px;padding:8px 16px;display:inline-block;">
-                    <p style="margin:0;font-size:11px;color:#ede9fe;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Plan</p>
-                    <p style="margin:2px 0 0;font-size:15px;color:#ffffff;font-weight:800;">${chosenPlan}</p>
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+          <!-- Main Message -->
+          <tr>
+            <td class="content-padding" style="padding:35px 40px;">
+              <p style="margin:0 0 18px;font-size:16px;color:#374151;line-height:1.6;">Thank you for reaching out. We have successfully logged your request for the <strong style="color:#7c3aed;">AI Voice Receptionist</strong>. This system will be custom-built to automatically handle your patient/customer calls, book appointments, and scale your business 24/7.</p>
+              <p style="margin:0 0 30px;font-size:16px;color:#374151;line-height:1.6;">Our team is reviewing your requirements and will reach out to you within <strong style="color:#059669;">24 hours</strong> to set up your personalised live demo.</p>
 
-        <!-- Body copy -->
-        <tr>
-          <td style="background:#ffffff;padding:32px 40px;">
-            <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.7;">We have successfully received your request for the <strong style="color:#5b21b6;">AI Voice Receptionist</strong> service. This means an intelligent AI system will be trained specifically for your business to answer inbound calls, book appointments, and handle queries — all automatically, 24/7.</p>
-            <p style="margin:0 0 24px;font-size:15px;color:#374151;line-height:1.7;">Our team is reviewing your details and will get in touch with you <strong>within 24 hours</strong> to walk you through the next steps and set up your personalised demo.</p>
+              <!-- Progress Steps -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;">
+                <tr><td style="padding:18px 20px;border-bottom:1px solid #e2e8f0;background-color:#ffffff;">
+                  <p style="margin:0;font-size:13px;font-weight:700;color:#1e293b;text-transform:uppercase;letter-spacing:1px;">What's Next?</p>
+                </td></tr>
+                
+                <!-- Step 1 -->
+                <tr>
+                  <td style="padding:16px 20px;border-bottom:1px solid #f1f5f9;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="32" style="vertical-align:top;padding-top:2px;">
+                          <div style="width:24px;height:24px;line-height:24px;background-color:#7c3aed;color:#ffffff;text-align:center;border-radius:50%;font-size:12px;font-weight:800;">1</div>
+                        </td>
+                        <td style="padding-left:12px;font-size:14px;color:#475569;line-height:1.4;">
+                          Reviewing your submission and call requirements
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
 
-            <!-- Steps -->
-            <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;">
-              <tr><td style="padding:16px 20px;border-bottom:1px solid #e5e7eb;">
-                <p style="margin:0;font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:1px;">What Happens Next</p>
-              </td></tr>
-              <tr><td style="padding:14px 20px;border-bottom:1px solid #e5e7eb;">
-                <table cellpadding="0" cellspacing="0"><tr>
-                  <td style="width:28px;height:28px;background:#7c3aed;border-radius:50%;text-align:center;vertical-align:middle;font-size:13px;font-weight:800;color:#fff;">1</td>
-                  <td style="padding-left:12px;font-size:14px;color:#374151;">Our team reviews your submission and call requirements</td>
-                </tr></table>
-              </td></tr>
-              <tr><td style="padding:14px 20px;border-bottom:1px solid #e5e7eb;">
-                <table cellpadding="0" cellspacing="0"><tr>
-                  <td style="width:28px;height:28px;background:#7c3aed;border-radius:50%;text-align:center;vertical-align:middle;font-size:13px;font-weight:800;color:#fff;">2</td>
-                  <td style="padding-left:12px;font-size:14px;color:#374151;">We configure and customise your AI Voice Receptionist for your practice</td>
-                </tr></table>
-              </td></tr>
-              <tr><td style="padding:14px 20px;">
-                <table cellpadding="0" cellspacing="0"><tr>
-                  <td style="width:28px;height:28px;background:#7c3aed;border-radius:50%;text-align:center;vertical-align:middle;font-size:13px;font-weight:800;color:#fff;">3</td>
-                  <td style="padding-left:12px;font-size:14px;color:#374151;">We call you within <strong style="color:#059669;">24 hours</strong> with a live demo of your AI Receptionist</td>
-                </tr></table>
-              </td></tr>
-            </table>
+                <!-- Step 2 -->
+                <tr>
+                  <td style="padding:16px 20px;border-bottom:1px solid #f1f5f9;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="32" style="vertical-align:top;padding-top:2px;">
+                          <div style="width:24px;height:24px;line-height:24px;background-color:#7c3aed;color:#ffffff;text-align:center;border-radius:50%;font-size:12px;font-weight:800;">2</div>
+                        </td>
+                        <td style="padding-left:12px;font-size:14px;color:#475569;line-height:1.4;">
+                          Configuring a custom AI Receptionist for your specific business needs
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
 
-            <p style="margin:24px 0 0;font-size:14px;color:#6b7280;">Have an urgent query? Simply reply to this email or contact us via WhatsApp. We are happy to help.</p>
-          </td>
-        </tr>
+                <!-- Step 3 -->
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="32" style="vertical-align:top;padding-top:2px;">
+                          <div style="width:24px;height:24px;line-height:24px;background-color:#059669;color:#ffffff;text-align:center;border-radius:50%;font-size:12px;font-weight:800;">3</div>
+                        </td>
+                        <td style="padding-left:12px;font-size:14px;color:#475569;line-height:1.4;">
+                          Live demo call to walk you through the voice experience
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
 
-        <!-- Footer -->
-        <tr>
-          <td style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:20px 40px;text-align:center;">
-            <p style="margin:0;color:#9ca3af;font-size:12px;">You received this email because you submitted a service request at maikus.ai</p>
-            <p style="margin:6px 0 0;color:#9ca3af;font-size:12px;">&copy; ${new Date().getFullYear()} Maikus AI Solutions</p>
-          </td>
-        </tr>
+              <p style="margin:30px 0 0;font-size:14px;color:#64748b;line-height:1.5;text-align:center;">
+                Have an urgent query? Reply to this email or contact us via 
+                <a href="https://wa.me/918008998312" style="color:#25d366;font-weight:700;text-decoration:none;border-bottom:1px solid #25d366;">WhatsApp</a>.
+              </p>
+            </td>
+          </tr>
 
-      </table>
-    </td></tr>
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#f8fafc;padding:30px 40px;text-align:center;border-top:1px solid #f1f5f9;">
+              <p style="margin:0 0 8px;font-size:12px;color:#94a3b8;">
+                You received this because you submitted a request at 
+                <a href="https://maikusai.onrender.com" style="color:#7c3aed;text-decoration:none;font-weight:600;">maikus.ai</a>
+              </p>
+              <p style="margin:0;font-size:12px;color:#94a3b8;font-weight:500;">
+                &copy; ${new Date().getFullYear()} Maikus AI Solutions. All rights reserved.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
   </table>
 </body>
 </html>`;
