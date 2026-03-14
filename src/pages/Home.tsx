@@ -86,7 +86,9 @@ const Home = () => {
                         </div>
                         <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight mb-8 leading-tight">
                             Never Miss Another <br />
-                            <span className="text-gradient">Customer Call</span>
+                            <span className="text-gradient">
+                                Customer Call
+                            </span>
                         </h1>
                         <p className="text-xl md:text-2xl text-brand-text-muted mb-12 max-w-3xl mx-auto leading-relaxed">
                             Maikus AI Receptionist answers calls, books appointments, and captures leads 24/7.
@@ -120,7 +122,7 @@ const Home = () => {
                             </div>
                             <div className="flex justify-between items-end border-b border-brand-border pb-4">
                                 <span className="text-brand-text-muted">Missed calls rate</span>
-                                <span className="text-2xl font-bold text-red-300">20%</span>
+                                <span className="text-2xl font-bold text-red-400">20%</span>
                             </div>
                             <div className="flex justify-between items-end border-b border-brand-border pb-4">
                                 <span className="text-brand-text-muted">Average patient/client value</span>
@@ -130,7 +132,7 @@ const Home = () => {
                         <div className="w-px h-40 bg-brand-border hidden md:block"></div>
                         <div className="flex-1 text-center">
                             <div className="text-sm text-brand-text-muted font-bold uppercase tracking-widest mb-2">Revenue Lost Monthly</div>
-                            <div className="text-5xl md:text-6xl font-extrabold text-red-300 mb-6">
+                            <div className="text-5xl md:text-6xl font-extrabold text-red-400 mb-6">
                                 <NumberCounter from={0} to={1080000} prefix="₹" />
                             </div>
                             <p className="text-brand-text text-lg">Maikus AI answers every call instantly. <br />Stop losing money.</p>
@@ -228,7 +230,7 @@ const Home = () => {
                                     <item.icon className="w-6 h-6 md:w-10 md:h-10 text-brand-text-muted group-hover:text-accent-blue transition-colors" />
                                 </div>
                                 <div className="md:text-center mt-2 md:mt-6">
-                                    <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:text-white transition-all">{item.title}</h3>
+                                    <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 group-hover:bg-clip-text transition-all">{item.title}</h3>
                                     <p className="text-brand-text-muted text-base md:text-lg">{item.desc}</p>
                                 </div>
                             </motion.div>
@@ -298,7 +300,7 @@ const Home = () => {
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent-green/5 via-transparent to-transparent"></div>
 
                 <div className="container relative mx-auto px-6 z-10">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-green/10 border border-accent-green/20 text-white text-sm font-bold tracking-widest uppercase mb-12 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-green/10 border border-accent-green/20 text-black dark:text-white text-sm font-bold tracking-widest uppercase mb-12 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
                         <ShieldCheck className="w-5 h-5 shrink-0" />
                         Locally Encrypted Streams
                     </div>
@@ -371,7 +373,7 @@ const Home = () => {
                         <button onClick={handleDemoNavigation} className="btn-primary text-xl py-5 px-12 shadow-[0_0_40px_rgba(0,240,255,0.4)]">Try AI Demo</button>
                         <Link to="/contact" className="btn-secondary text-xl py-5 px-12">Book Consultation</Link>
                     </div>
-                    <div className="flex items-center justify-center gap-2 text-accent-green text-sm font-bold bg-accent-green/10 px-6 py-3 rounded-full mx-auto w-max max-w-full">
+                    <div className="flex items-center justify-center gap-2 dark:text-accent-green text-sm font-bold bg-accent-green/10 px-6 py-3 rounded-full mx-auto w-max max-w-full">
                         <ShieldCheck className="w-5 h-5 shrink-0" />
                         <DecryptedText text="HIPAA-Compliant: All patient data is fully decrypted locally and safe." animateOn="view" speed={60} maxIterations={15} />
                     </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Phone, ShieldCheck, Clock, CheckCircle, CheckCircle2, DollarSign, ArrowRight, Star, HelpCircle, Zap } from 'lucide-react';
+import { Phone, ShieldCheck, CheckCircle, CheckCircle2, Star, HelpCircle, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import DecryptedText from '../components/DecryptedText';
 
@@ -11,69 +11,66 @@ const selectClass =
 
 const plans = [
     {
-        id: 'starter',
-        name: 'Starter',
-        monthly: '$149',
-        minutes: '50 mins/mo included',
-        overage: '$0.60 / min overage',
-        setup: '$1,000 one-time setup',
+        id: 'essential',
+        name: 'Essential',
+        monthly: '₹5,000',
+        minutes: '200 mins/mo free',
+        overage: '₹40 / min overage',
+        setup: '₹20,000 one-time setup',
         features: [
             '1 AI Receptionist',
             'Dedicated Phone Number',
             'Appointment Booking',
-            'Email Support',
-            'Basic Call Analytics',
+            'Email Notifications',
+            'Basic Support',
         ],
         popular: false,
     },
     {
-        id: 'growth',
-        name: 'Growth',
-        monthly: '$349',
-        minutes: '200 mins/mo included',
-        overage: '$0.55 / min overage',
-        setup: '$1,000 one-time setup',
+        id: 'excel-integration',
+        name: 'Excel Integration',
+        monthly: '₹6,000',
+        minutes: '200 mins/mo free',
+        overage: '₹40 / min overage',
+        setup: '₹20,000 one-time setup',
         features: [
-            '1 AI Receptionist',
-            'Dedicated Phone Number',
-            'Custom Script & Persona',
+            'All Essential Features',
+            'Direct Excel Integration',
+            'Automated Data Entry',
+            'Custom Caller Routing',
             'Priority Support',
-            'Call Analytics + Recordings',
-            'Monthly Performance Report',
+        ],
+        popular: false,
+    },
+    {
+        id: 'dashboard-pro',
+        name: 'Dashboard Pro',
+        monthly: '₹7,500',
+        minutes: '400 mins/mo free',
+        overage: '₹35 / min overage',
+        setup: '₹25,000 one-time setup',
+        features: [
+            'Live Call Summary Dashboard',
+            'Transcripts & Recordings',
+            'Custom Script & Persona',
+            'Full Call Analytics',
+            'Account Manager',
         ],
         popular: true,
     },
     {
-        id: 'clinic-pro',
-        name: 'Clinic Pro',
-        monthly: '$699',
-        minutes: '500 mins/mo included',
-        overage: '$0.50 / min overage',
-        setup: '$1,500 one-time setup',
-        features: [
-            '2 AI Receptionists',
-            '2 Dedicated Phone Numbers',
-            'Fully Custom Script & Tone',
-            'Priority Support with SLA',
-            'Full Call Analytics',
-            'Dedicated Account Manager',
-        ],
-        popular: false,
-    },
-    {
-        id: 'enterprise',
-        name: 'Enterprise',
+        id: 'custom-enterprise',
+        name: 'Fully Custom',
         monthly: 'Custom',
-        minutes: 'Unlimited',
+        minutes: 'Custom Volume',
         overage: 'Negotiated',
-        setup: 'Custom',
+        setup: 'Custom bespoke setup',
         features: [
             'Unlimited Receptionists',
-            'White-Label Option',
-            'Custom SLA & Uptime Guarantee',
+            'Custom CRM/EHR Integrations',
+            'Bespoke AI Development',
             'Dedicated Infrastructure',
-            '24/7 Priority Support Line',
-            'Custom Integrations (EHR, CRM)',
+            '24/7 Priority SLA Support',
         ],
         popular: false,
     },
@@ -151,101 +148,25 @@ const AIVoiceReceptionist = () => {
     return (
         <div className="pt-24 pb-16">
 
-            {/* ─── HERO ─── */}
-            <section className="relative overflow-hidden pt-20 pb-32">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent-purple/20 via-brand-bg to-brand-bg -z-10" />
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            {/* ─── HERO & LIVE DEMO ─── */}
+            <section id="live-demo" className="relative overflow-hidden pt-20 pb-24 border-b border-brand-border">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent-blue/10 via-brand-bg to-brand-bg -z-10" />
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-12">
 
                     <div className="flex justify-center mb-6">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-bg-alt/80 backdrop-blur-sm border border-brand-border/80 text-sm font-medium shadow-lg">
-                            <span className="w-2 h-2 rounded-full bg-accent-green animate-pulse" />
-                            <span className="text-brand-text-muted">Service:</span>
-                            <span className="text-brand-text font-semibold tracking-wide uppercase text-xs">AI Voice Receptionist</span>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-center mb-6">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-green/10 border border-accent-green/40 text-accent-green text-xs font-bold tracking-widest uppercase mb-2">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-green/10 border border-accent-green/40 dark:text-accent-green text-xs font-bold tracking-widest uppercase mb-2">
                             <ShieldCheck className="w-4 h-4 shrink-0" />
                             <DecryptedText text="HIPAA-Compliant: All patient data is fully encrypted." animateOn="view" speed={60} maxIterations={15} />
                         </div>
                     </div>
 
                     <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-                        Never Miss a{' '}
-                        <span className="text-gradient">Patient Call</span>{' '}
-                        Again.
+                        Have a <span className="dark:bg-white dark:text-black text-white bg-black px-4 mx-2 rounded-lg">Live</span> Demo!
                     </h1>
-                    <p className="text-xl text-brand-text-muted mb-10 leading-relaxed max-w-3xl mx-auto">
-                        We deploy a conversational AI receptionist on your phone line — 24/7, fully compliant, and indistinguishable from a real human. It books appointments, answers FAQs, and captures every lead while you focus on your work.
+                    <p className="text-xl text-brand-text-muted mb-12 max-w-2xl mx-auto leading-relaxed">
+                        Enter your number and our AI will call you instantly. Hear how human it sounds — no hold music, no waiting.
                     </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <button onClick={() => smoothScroll('intake-form')} className="btn-primary text-lg px-10 py-4">
-                            Deploy My AI Receptionist
-                        </button>
-                        <button onClick={() => smoothScroll('pricing')} className="btn-secondary text-lg px-10 py-4 flex items-center gap-2 group">
-                            View Plans <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </button>
-                    </div>
 
-                    <div className="mt-10 flex items-center justify-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        ))}
-                        <span className="ml-2 text-brand-text-muted text-sm">Trusted by clinics, dentists &amp; real-estate offices</span>
-                    </div>
-                </div>
-            </section>
-
-            {/* ─── FEATURE CARDS ─── */}
-            <section className="py-24 relative bg-brand-bg-alt/50 border-y border-brand-border">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-8 text-center">
-                    {[
-                        {
-                            icon: <Clock className="w-8 h-8 text-accent-blue" />,
-                            title: '24/7 — Never Offline',
-                            desc: 'Your AI receptionist answers every call — even at 2 AM on a holiday. Never lose a patient to voicemail again.',
-                        },
-                        {
-                            icon: <ShieldCheck className="w-8 h-8 text-accent-green" />,
-                            title: 'Secure & Compliant',
-                            desc: 'Patient data is encrypted at rest and in transit, meeting the highest healthcare security standards.',
-                        },
-                        {
-                            icon: <DollarSign className="w-8 h-8 text-accent-purple" />,
-                            title: 'Predictable Monthly Cost',
-                            desc: 'Flat monthly fee plus transparent per-minute usage. No surprise bills, no hidden costs — ever.',
-                        },
-                    ].map((b, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                            className="glass-card p-8 group hover:shadow-[0_0_30px_-5px_#00f0ff40]"
-                        >
-                            <div className="w-16 h-16 rounded-2xl bg-brand-bg flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                                {b.icon}
-                            </div>
-                            <h3 className="text-xl font-semibold mb-3">{b.title}</h3>
-                            <p className="text-brand-text-muted leading-relaxed">{b.desc}</p>
-                        </motion.div>
-                    ))}
-                </div>
-            </section>
-
-            {/* LIVE DEMO SECTION */}
-            <section id="live-demo" className="py-24 relative bg-brand-bg-alt border-t border-brand-border overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent-blue/5 via-transparent to-transparent"></div>
-                
-                <div className="container relative mx-auto px-6 lg:px-12 text-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-purple/10 border border-accent-purple/20 text-accent-purple text-sm font-bold tracking-widest uppercase mb-6">
-                        Interactive Experience
-                    </div>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6">Experience the <span className="text-gradient">AI Receptionist Live</span></h2>
-                    <p className="text-brand-text-muted text-lg max-w-2xl mx-auto mb-12">Enter your number and our AI will call you instantly to show you how human it sounds.</p>
-                
                     <div className="max-w-md mx-auto relative z-10">
                         <AnimatePresence mode="wait">
                             {demoState === 'idle' && (
@@ -262,7 +183,7 @@ const AIVoiceReceptionist = () => {
                                         value={demoPhone}
                                         onChange={e => setDemoPhone(e.target.value)}
                                         placeholder="Enter your mobile number" 
-                                        className="w-full bg-brand-bg border border-brand-border rounded-xl px-6 py-5 text-lg text-brand-text outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-all"
+                                        className="w-full bg-brand-bg border border-brand-border rounded-xl px-6 py-5 text-lg text-brand-text outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-all shadow-xl"
                                         required
                                     />
                                     <button type="submit" className="btn-primary w-full py-5 text-lg shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_40px_rgba(0,240,255,0.5)] flex items-center justify-center gap-3">
@@ -281,7 +202,7 @@ const AIVoiceReceptionist = () => {
                                     <div className="w-20 h-20 rounded-full bg-accent-blue/20 flex items-center justify-center mb-6 animate-pulse">
                                         <Phone className="w-8 h-8 text-accent-blue animate-bounce" />
                                     </div>
-                                    <h3 className="text-2xl font-bold mb-2">Connecting...</h3>
+                                    <h3 className="text-2xl font-bold mb-2 text-brand-text">Connecting...</h3>
                                     <p className="text-brand-text-muted">You will receive a call momentarily.</p>
                                 </motion.div>
                             )}
@@ -296,14 +217,23 @@ const AIVoiceReceptionist = () => {
                                     <AnimatedWaveform />
                                     <h3 className="text-2xl font-bold mt-8 mb-2 text-brand-text">Call in Progress</h3>
                                     <p className="text-brand-text-muted mb-6">Speak to the AI normally.</p>
-                                    <div className="flex items-center gap-2 text-accent-green text-xs font-bold bg-accent-green/10 px-4 py-2 rounded-full mb-8 shadow-sm">
-                                        <ShieldCheck className="w-4 h-4 shrink-0" />
-                                        <DecryptedText text="Live Audio Stream: Fully encrypted and privately processed." animateOn="view" speed={40} maxIterations={12} />
+                                    <div className="flex items-center justify-center w-full min-h-[40px] mb-8">
+                                        <div className="flex items-center gap-2 text-accent-green text-xs font-bold bg-accent-green/10 px-4 py-2 rounded-full shadow-sm text-center">
+                                            <ShieldCheck className="w-4 h-4 shrink-0" />
+                                            <DecryptedText text="Live Audio Stream: Fully encrypted and privately processed." animateOn="view" speed={40} maxIterations={12} />
+                                        </div>
                                     </div>
-                                    <button onClick={(e: any) => {e.preventDefault(); setDemoState('idle');}} className="btn-secondary py-2 px-6 text-sm flex items-center gap-2"><Phone className="w-4 h-4"/> End Call Simulation</button>
+                                    <button onClick={(e: any) => {e.preventDefault(); setDemoState('idle');}} className="btn-secondary py-2 px-6 text-sm flex items-center gap-2 text-brand-text"><Phone className="w-4 h-4"/> End Call Simulation</button>
                                 </motion.div>
                             )}
                         </AnimatePresence>
+                    </div>
+
+                    <div className="mt-16 flex items-center justify-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        ))}
+                        <span className="ml-2 text-brand-text-muted text-sm border-l border-brand-border/50 pl-3">Trusted by clinics, dentists & real estate</span>
                     </div>
                 </div>
             </section>
@@ -312,7 +242,7 @@ const AIVoiceReceptionist = () => {
             <section className="py-24 bg-brand-bg">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-brand-text">
-                        Up and Running in <span className="text-gradient">5 Days</span>
+                        Up and Running in <span className="dark:bg-white dark:text-black text-white bg-black px-3 mx-2 rounded-lg">5 Days</span>
                     </h2>
                     <p className="text-brand-text-muted mb-16 max-w-2xl mx-auto">
                         We handle everything. You simply tell us about your practice and we'll handle the rest.
@@ -325,11 +255,11 @@ const AIVoiceReceptionist = () => {
                             { step: '4', title: 'Ongoing Management', desc: 'We monitor performance and fine-tune monthly. You receive a simple usage report.' },
                         ].map((item, idx) => (
                             <div key={idx} className="relative flex flex-col items-center">
-                                <div className="w-16 h-16 rounded-full bg-brand-bg border-2 border-accent-purple flex items-center justify-center text-2xl font-bold text-accent-purple mb-6 z-10 shadow-[0_0_30px_rgba(155,81,224,0.2)]">
+                                <div className="w-16 h-16 rounded-full bg-brand-bg border-2 border-accent-blue flex items-center justify-center text-2xl font-bold text-accent-blue mb-6 z-10 shadow-[0_0_30px_rgba(0,240,255,0.2)] hover:scale-110 transition-transform">
                                     {item.step}
                                 </div>
                                 {idx !== 3 && (
-                                    <div className="hidden md:block absolute top-8 left-1/2 w-full h-[2px] bg-gradient-to-r from-accent-purple via-accent-blue to-transparent -z-0" />
+                                    <div className="hidden md:block absolute top-8 left-1/2 w-full h-[2px] bg-gradient-to-r from-accent-blue via-accent-blue/50 to-transparent -z-0" />
                                 )}
                                 <h3 className="text-lg font-bold text-brand-text mb-2">{item.title}</h3>
                                 <p className="text-brand-text-muted text-sm px-4">{item.desc}</p>
@@ -344,7 +274,7 @@ const AIVoiceReceptionist = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl sm:text-4xl font-bold text-brand-text mb-4">
-                            Simple, Transparent <span className="text-gradient">Plans</span>
+                            Simple, Transparent <span className="dark:bg-white dark:text-black text-white bg-black px-3 mx-1 rounded-lg">Plans</span>
                         </h2>
                         <p className="text-brand-text-muted max-w-2xl mx-auto">
                             Flat monthly fees and transparent per-minute usage. Every plan includes setup, configuration, and ongoing management — handled entirely by us.
@@ -614,7 +544,7 @@ const AIVoiceReceptionist = () => {
                 <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold text-brand-text mb-4">
-                            Common <span className="text-gradient">Questions</span>
+                            Common <span className="dark:bg-white dark:text-black text-white bg-black px-3 mx-1 rounded-lg">Questions</span>
                         </h2>
                         <p className="text-brand-text-muted">Everything you need to know before going live.</p>
                     </div>
@@ -655,7 +585,7 @@ const AIVoiceReceptionist = () => {
 
             {/* Bottom Security Notice */}
             <div className="container mx-auto px-6 mt-16 mb-8 text-center flex items-center justify-center">
-                <div className="flex items-center gap-2 text-accent-green text-sm font-bold bg-accent-green/5 border border-accent-green/20 px-6 py-3 rounded-full">
+                <div className="flex items-center gap-2 dark:text-accent-green text-sm font-bold bg-accent-green/5 border border-accent-green/20 px-6 py-3 rounded-full">
                     <ShieldCheck className="w-5 h-5 shrink-0" />
                     <DecryptedText text="HIPAA-Compliant: All patient data is encrypted locally and completely safe." animateOn="view" speed={60} maxIterations={15} />
                 </div>

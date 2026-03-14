@@ -7,42 +7,76 @@ const Pricing = () => {
 
     const voicePlans = [
         {
-            id: 'growth',
-            name: 'Growth',
-            monthly: '₹15,000',
+            id: 'essential',
+            name: 'Essential',
+            monthly: '₹5,000',
             setup: '₹20,000 one-time setup',
-            minutes: '1,500 mins/mo included',
-            overage: 'Unlimited within fair usage',
+            minutes: '200 mins/mo free',
+            overage: '₹40 / min overage',
             features: [
                 '1 AI Receptionist Bot',
                 'Dedicated Phone Number',
-                'Custom Script + Persona',
-                'Call Analytics + Recordings',
+                'Appointment Booking Automation',
+                'Email Notifications for Calls',
                 'HIPAA-Ready Infrastructure',
-                'Monthly Performance Report',
+            ],
+            cta: 'Get Started',
+            popular: false,
+            color: 'accent-blue',
+        },
+        {
+            id: 'excel-integration',
+            name: 'Excel Integration',
+            monthly: '₹6,000',
+            setup: '₹20,000 one-time setup',
+            minutes: '200 mins/mo free',
+            overage: '₹40 / min overage',
+            features: [
+                'All Essential Features',
+                'Direct Excel/Google Sheets Integration',
+                'Automated Data Entry',
+                'Custom Caller Routing',
+                'Priority Email Support',
+            ],
+            cta: 'Get Started',
+            popular: false,
+            color: 'accent-green',
+        },
+        {
+            id: 'dashboard-pro',
+            name: 'Dashboard Pro',
+            monthly: '₹7,500',
+            setup: '₹25,000 one-time setup',
+            minutes: '400 mins/mo free',
+            overage: '₹35 / min overage',
+            features: [
+                'Live Call Summary Dashboard',
+                'Full Call Transcripts & Recordings',
+                'Custom Script & AI Persona',
+                'Analytics & Insights',
+                'Dedicated Account Manager',
             ],
             cta: 'Most Popular — Start Now',
             popular: true,
             color: 'accent-purple',
         },
         {
-            id: 'standard',
-            name: 'Standard',
-            monthly: '₹10,000',
-            setup: '₹25,000 one-time setup',
-            minutes: '500 mins/mo included',
-            overage: '₹20 / min overage',
+            id: 'custom-enterprise',
+            name: 'Fully Custom',
+            monthly: 'Custom',
+            setup: 'Custom bespoke development',
+            minutes: 'Custom Volume',
+            overage: 'Negotiated',
             features: [
-                '1 AI Receptionist Bot',
-                'Dedicated Phone Number',
-                'Appointment Booking Script',
-                'Basic Analytics Dashboard',
-                'Email Support',
-                'HIPAA-Ready Infrastructure',
+                'Unlimited AI Receptionists',
+                'Custom CRM/EHR Integrations',
+                'Multi-location Routing Patterns',
+                'Dedicated Infrastructure',
+                '24/7 Priority Support Line',
             ],
-            cta: 'Get Started',
+            cta: 'Contact Us',
             popular: false,
-            color: 'accent-blue',
+            color: 'brand-text',
         },
     ];
 
@@ -98,7 +132,7 @@ const Pricing = () => {
                     <p className="text-brand-text-muted ml-11">For clinics, dentists, real estate offices, and any business that receives inbound calls.</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-24">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto mb-24">
                     {voicePlans.map((plan, i) => (
                         <motion.div
                             key={i}
@@ -112,7 +146,7 @@ const Pricing = () => {
                                 }`}
                         >
                             {plan.popular && (
-                                <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-accent-blue to-accent-purple text-brand-text text-xs font-bold text-center py-1">
+                                <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-accent-blue to-accent-purple text-brand-text text-xs text-white font-bold text-center py-1">
                                     MOST POPULAR
                                 </div>
                             )}
