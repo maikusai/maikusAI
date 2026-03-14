@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Phone, ShieldCheck, CheckCircle, CheckCircle2, Star, HelpCircle, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import DecryptedText from '../components/DecryptedText';
+import FormSuccessScreen from '../components/FormSuccessScreen';
 
 const inputClass =
     'w-full bg-brand-bg/30 border border-brand-border/60 hover:bg-brand-bg/50 hover:border-brand-border backdrop-blur-sm rounded-lg px-4 py-3.5 text-brand-text focus:outline-none focus:ring-2 focus:ring-accent-blue/50 focus:ring-offset-2 focus:ring-offset-brand-bg transition-all';
@@ -129,20 +130,203 @@ const AnimatedWaveform = () => {
     );
 };
 
+const BREVO_API_KEY = import.meta.env.VITE_BREVO_API_KEY as string;
+const SENDER_EMAIL = import.meta.env.VITE_BREVO_SENDER_EMAIL as string;
+
 const AIVoiceReceptionist = () => {
     const [quickCall, setQuickCall] = useState(false);
-    const [selectedPlan, setSelectedPlan] = useState<string>('growth');
+    const [selectedPlan, setSelectedPlan] = useState<string>('dashboard-pro');
     const [contactForPricing, setContactForPricing] = useState(false);
     const [openFaq, setOpenFaq] = useState<number | null>(null);
 
     const [demoPhone, setDemoPhone] = useState('');
     const [demoState, setDemoState] = useState<'idle' | 'calling' | 'connected'>('idle');
 
+    // ── form fields ──
+    const [formData, setFormData] = useState({
+        quickName: '', quickPhone: '',
+        practiceName: '', contactName: '', email: '', phone: '',
+        industry: '', goal: '', callVolume: '', currentSetup: '',
+    });
+    const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+    const [submitted, setSubmitted] = useState(false);
+
+    const setField = (key: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+        setFormData(prev => ({ ...prev, [key]: e.target.value }));
+
     const handleDemoCall = (e: React.FormEvent) => {
         e.preventDefault();
-        if(!demoPhone) return;
+        if (!demoPhone) return;
         setDemoState('calling');
         setTimeout(() => setDemoState('connected'), 3000);
+    };
+
+    const handleFormSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSubmitState('sending');
+
+        const chosenPlan = contactForPricing
+            ? 'Not sure – wants to discuss pricing'
+            : plans.find(p => p.id === selectedPlan)?.name ?? selectedPlan;
+
+
+        const htmlBody = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0B0F19;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0B0F19;padding:40px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+        <!-- Header -->
+        <tr>
+          <td style="background:linear-gradient(135deg,#00f0ff22,#9b51e022);border:1px solid rgba(255,255,255,0.1);border-radius:16px 16px 0 0;padding:32px 40px;text-align:center;">
+            <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#9b51e0;">Maikus AI — AI Voice Receptionist</p>
+            <h1 style="margin:0;font-size:28px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;">📬 New Service Request</h1>
+            <p style="margin:10px 0 0;font-size:14px;color:#9ca3af;">Someone just submitted a demo request from the website</p>
+          </td>
+        </tr>
+
+        <!-- Alert badge -->
+        <tr>
+          <td style="background:#111122;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);padding:16px 40px;">
+            <div style="background:#00f0ff12;border:1px solid #00f0ff33;border-radius:8px;padding:10px 16px;display:inline-block;">
+              <span style="color:#00f0ff;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">⚡ Action Required — Respond within 24 hours</span>
+            </div>
+          </td>
+        </tr>
+
+        ${quickCall ? `
+        <!-- Quick Call Section -->
+        <tr>
+          <td style="background:#111122;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);padding:8px 40px 32px;">
+            <h2 style="font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px;margin-bottom:20px;">Quick Call Request</h2>
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+                  <span style="color:#9ca3af;font-size:13px;">Name</span>
+                  <p style="margin:4px 0 0;color:#ffffff;font-size:16px;font-weight:600;">${formData.quickName}</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0;">
+                  <span style="color:#9ca3af;font-size:13px;">Phone / WhatsApp</span>
+                  <p style="margin:4px 0 0;color:#00f0ff;font-size:20px;font-weight:700;">${formData.quickPhone}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        ` : `
+        <!-- Full Form Details -->
+        <tr>
+          <td style="background:#111122;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);padding:8px 40px 24px;">
+            <h2 style="font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px;margin-bottom:20px;">Practice Details</h2>
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="50%" style="padding:8px 12px 8px 0;vertical-align:top;">
+                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Practice / Business</span>
+                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.practiceName}</p>
+                </td>
+                <td width="50%" style="padding:8px 0;vertical-align:top;">
+                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Contact Person</span>
+                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.contactName}</p>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%" style="padding:8px 12px 8px 0;vertical-align:top;border-top:1px solid rgba(255,255,255,0.06);">
+                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Email</span>
+                  <p style="margin:4px 0 0;"><a href="mailto:${formData.email}" style="color:#00f0ff;font-size:15px;font-weight:600;text-decoration:none;">${formData.email}</a></p>
+                </td>
+                <td width="50%" style="padding:8px 0;vertical-align:top;border-top:1px solid rgba(255,255,255,0.06);">
+                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Phone / WhatsApp</span>
+                  <p style="margin:4px 0 0;color:#00f0ff;font-size:15px;font-weight:700;">${formData.phone}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#111122;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);padding:8px 40px 24px;">
+            <h2 style="font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px;margin-bottom:20px;">Call Profile</h2>
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="50%" style="padding:8px 12px 8px 0;vertical-align:top;">
+                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Industry</span>
+                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.industry}</p>
+                </td>
+                <td width="50%" style="padding:8px 0;vertical-align:top;">
+                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Primary Goal</span>
+                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.goal}</p>
+                </td>
+              </tr>
+              <tr>
+                <td width="50%" style="padding:8px 12px 8px 0;vertical-align:top;border-top:1px solid rgba(255,255,255,0.06);">
+                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Monthly Call Volume</span>
+                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.callVolume}</p>
+                </td>
+                <td width="50%" style="padding:8px 0;vertical-align:top;border-top:1px solid rgba(255,255,255,0.06);">
+                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Current Setup</span>
+                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.currentSetup}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <!-- Plan -->
+        <tr>
+          <td style="background:#111122;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);padding:8px 40px 32px;">
+            <h2 style="font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px;margin-bottom:20px;">Plan Selected</h2>
+            <div style="background:linear-gradient(135deg,#9b51e022,#00f0ff11);border:1px solid #9b51e044;border-radius:10px;padding:14px 20px;display:inline-block;">
+              <span style="color:#9b51e0;font-size:20px;font-weight:800;">${chosenPlan}</span>
+            </div>
+          </td>
+        </tr>
+        `}
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#0B0F19;border:1px solid rgba(255,255,255,0.1);border-top:none;border-radius:0 0 16px 16px;padding:24px 40px;text-align:center;">
+            <p style="margin:0;color:#4b5563;font-size:12px;">This email was auto-generated by the Maikus AI website.</p>
+            <p style="margin:6px 0 0;color:#4b5563;font-size:12px;">© ${new Date().getFullYear()} Maikus AI Solutions</p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+        try {
+            const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+                method: 'POST',
+                headers: {
+                    'accept': 'application/json',
+                    'api-key': BREVO_API_KEY,
+                    'content-type': 'application/json',
+                },
+                body: JSON.stringify({
+                    sender: { name: 'Maikus AI Website', email: SENDER_EMAIL },
+                    to: [{ email: SENDER_EMAIL, name: 'Maikus AI Team' }],
+                    subject: quickCall
+                        ? `⚡ Quick Call Request – ${formData.quickName}`
+                        : `📬 New Demo Request – ${formData.practiceName} (${chosenPlan})`,
+                    htmlContent: htmlBody,
+                }),
+            });
+
+            if (res.ok) {
+                setSubmitState('success');
+                setSubmitted(true);
+                setFormData({ quickName: '', quickPhone: '', practiceName: '', contactName: '', email: '', phone: '', industry: '', goal: '', callVolume: '', currentSetup: '' });
+            } else {
+                setSubmitState('error');
+            }
+        } catch {
+            setSubmitState('error');
+        }
     };
 
     return (
@@ -344,6 +528,14 @@ const AIVoiceReceptionist = () => {
             {/* ─── INTAKE FORM ─── */}
             <section id="intake-form" className="py-24 relative bg-brand-bg-alt/30">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                    {submitted ? (
+                        <FormSuccessScreen
+                            contactName={quickCall ? formData.quickName : formData.contactName}
+                            planName={contactForPricing ? 'Discuss Pricing' : plans.find(p => p.id === selectedPlan)?.name}
+                            onReset={() => { setSubmitted(false); setSubmitState('idle'); setSelectedPlan('dashboard-pro'); setContactForPricing(false); }}
+                        />
+                    ) : (
                     <div className="glass-card p-8 md:p-12 relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-purple via-accent-blue to-accent-purple" />
 
@@ -372,19 +564,27 @@ const AIVoiceReceptionist = () => {
                             </div>
                         </div>
 
+                        {/* Submission feedback banner — only error shown here now */}
+                        {submitState === 'error' && (
+                            <div className="mb-6 flex items-center gap-3 bg-red-500/10 border border-red-400/30 text-red-400 text-sm font-semibold px-5 py-4 rounded-xl">
+                                <CheckCircle className="w-5 h-5 shrink-0" />
+                                Something went wrong. Please try again or email us directly.
+                            </div>
+                        )}
+
                         <form
                             className="space-y-8"
-                            onSubmit={(e) => { e.preventDefault(); alert("Request submitted! We'll contact you within 24 hours."); }}
+                            onSubmit={handleFormSubmit}
                         >
                             {quickCall ? (
                                 <div className="space-y-6 max-w-lg mx-auto">
                                     <div>
                                         <label className="block text-sm font-medium text-brand-text-muted mb-2">Name</label>
-                                        <input type="text" required className={inputClass} placeholder="Dr. John Smith" />
+                                        <input type="text" required className={inputClass} placeholder="Dr. John Smith" value={formData.quickName} onChange={setField('quickName')} />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-brand-text-muted mb-2">Phone / WhatsApp</label>
-                                        <input type="tel" required className={inputClass} placeholder="+1 555 000 1234" />
+                                        <input type="tel" required className={inputClass} placeholder="+91 98765 43210" value={formData.quickPhone} onChange={setField('quickPhone')} />
                                     </div>
                                 </div>
                             ) : (
@@ -398,19 +598,19 @@ const AIVoiceReceptionist = () => {
                                         <div className="grid md:grid-cols-2 gap-6">
                                             <div>
                                                 <label className="block text-sm font-medium text-brand-text-muted mb-2">Practice / Business Name</label>
-                                                <input type="text" required className={inputClass} placeholder="Dr. Smith's Dental Clinic" />
+                                                <input type="text" required className={inputClass} placeholder="Dr. Smith's Dental Clinic" value={formData.practiceName} onChange={setField('practiceName')} />
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium text-brand-text-muted mb-2">Contact Name</label>
-                                                <input type="text" required className={inputClass} placeholder="Dr. John Smith" />
+                                                <input type="text" required className={inputClass} placeholder="Dr. John Smith" value={formData.contactName} onChange={setField('contactName')} />
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium text-brand-text-muted mb-2">Email</label>
-                                                <input type="email" required className={inputClass} placeholder="john@clinic.com" />
+                                                <input type="email" required className={inputClass} placeholder="john@clinic.com" value={formData.email} onChange={setField('email')} />
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium text-brand-text-muted mb-2">Phone / WhatsApp</label>
-                                                <input type="tel" required className={inputClass} placeholder="+1 555 000 1234" />
+                                                <input type="tel" required className={inputClass} placeholder="+91 98765 43210" value={formData.phone} onChange={setField('phone')} />
                                             </div>
                                         </div>
                                     </div>
@@ -424,7 +624,7 @@ const AIVoiceReceptionist = () => {
                                         <div className="grid md:grid-cols-2 gap-6">
                                             <div>
                                                 <label className="block text-sm font-medium text-brand-text-muted mb-2">Industry / Specialty</label>
-                                                <select required className={selectClass}>
+                                                <select required className={selectClass} value={formData.industry} onChange={setField('industry')}>
                                                     <option value="" className="bg-brand-bg text-brand-text">Select industry...</option>
                                                     <option value="Dental" className="bg-brand-bg text-brand-text">Dental Clinic</option>
                                                     <option value="Medical" className="bg-brand-bg text-brand-text">Medical / GP</option>
@@ -436,7 +636,7 @@ const AIVoiceReceptionist = () => {
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium text-brand-text-muted mb-2">Primary Goal</label>
-                                                <select required className={selectClass}>
+                                                <select required className={selectClass} value={formData.goal} onChange={setField('goal')}>
                                                     <option value="" className="bg-brand-bg text-brand-text">Select goal...</option>
                                                     <option value="Book appointments" className="bg-brand-bg text-brand-text">Book Appointments</option>
                                                     <option value="Answer FAQs" className="bg-brand-bg text-brand-text">Answer FAQs &amp; Hours</option>
@@ -446,7 +646,7 @@ const AIVoiceReceptionist = () => {
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium text-brand-text-muted mb-2">Approx. Inbound Calls / Month</label>
-                                                <select required className={selectClass}>
+                                                <select required className={selectClass} value={formData.callVolume} onChange={setField('callVolume')}>
                                                     <option value="" className="bg-brand-bg text-brand-text">Select volume...</option>
                                                     <option value="0–50" className="bg-brand-bg text-brand-text">0 – 50 calls</option>
                                                     <option value="50–200" className="bg-brand-bg text-brand-text">50 – 200 calls</option>
@@ -456,7 +656,7 @@ const AIVoiceReceptionist = () => {
                                             </div>
                                             <div>
                                                 <label className="block text-sm font-medium text-brand-text-muted mb-2">Current Setup</label>
-                                                <select required className={selectClass}>
+                                                <select required className={selectClass} value={formData.currentSetup} onChange={setField('currentSetup')}>
                                                     <option value="" className="bg-brand-bg text-brand-text">Select current setup...</option>
                                                     <option value="Human only" className="bg-brand-bg text-brand-text">Human Receptionist Only</option>
                                                     <option value="Voicemail" className="bg-brand-bg text-brand-text">Mostly Voicemail</option>
@@ -526,8 +726,14 @@ const AIVoiceReceptionist = () => {
                             )}
 
                             <div className="pt-6 border-t border-brand-border/50">
-                                <button type="submit" className="w-full btn-primary text-lg py-4">
-                                    {quickCall ? 'Request Quick Call' : 'Request My Free Demo'}
+                                <button
+                                    type="submit"
+                                    disabled={submitState === 'sending'}
+                                    className="w-full btn-primary text-lg py-4 disabled:opacity-60 disabled:cursor-not-allowed"
+                                >
+                                    {submitState === 'sending'
+                                        ? 'Sending…'
+                                        : quickCall ? 'Request Quick Call' : 'Request My Free Demo'}
                                 </button>
                                 <p className="text-center text-xs text-brand-text-muted mt-4 flex items-center justify-center gap-1">
                                     <CheckCircle className="w-3 h-3 text-accent-green" />
@@ -536,6 +742,7 @@ const AIVoiceReceptionist = () => {
                             </div>
                         </form>
                     </div>
+                    )}
                 </div>
             </section>
 

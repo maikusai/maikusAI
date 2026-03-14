@@ -67,7 +67,7 @@ const About = () => {
                         </p>
                         <div className="mt-8">
                             <div className="font-bold text-brand-text text-xl">Founder Name</div>
-                            <div className="text-accent-blue text-sm">Lead Solutions Engineer</div>
+                            <div className="text-accent-blue text-sm">Datta Vignesh</div>
                         </div>
                     </div>
                 </div>

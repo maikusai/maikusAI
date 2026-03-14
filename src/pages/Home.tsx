@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { ArrowRight, Phone, Clock, Calendar, Globe, Target, Building2, Stethoscope, Scissors, Home as HomeIcon, Bot, MessageSquare, Zap, Users, Mail, ShieldCheck } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import DecryptedText from '../components/DecryptedText';
@@ -25,23 +25,32 @@ const AnimatedSphere = () => {
 
 const NumberCounter = ({ from, to, duration = 2, prefix = "", suffix = "" }: { from: number, to: number, duration?: number, prefix?: string, suffix?: string }) => {
     const [count, setCount] = useState(from);
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-50px" });
 
     useEffect(() => {
+        if (!isInView) return;
+
         let startTime: number;
+        let animationFrameId: number;
         const animate = (time: number) => {
             if (!startTime) startTime = time;
             const progress = (time - startTime) / (duration * 1000);
             if (progress < 1) {
                 setCount(Math.floor(from + (to - from) * progress));
-                requestAnimationFrame(animate);
+                animationFrameId = requestAnimationFrame(animate);
             } else {
                 setCount(to);
             }
         };
-        requestAnimationFrame(animate);
-    }, [from, to, duration]);
+        animationFrameId = requestAnimationFrame(animate);
 
-    return <span>{prefix}{count.toLocaleString()}{suffix}</span>;
+        return () => {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        };
+    }, [from, to, duration, isInView]);
+
+    return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
 }
 
 const Home = () => {
