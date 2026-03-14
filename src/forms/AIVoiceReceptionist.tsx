@@ -3,6 +3,7 @@ import { Phone, ShieldCheck, CheckCircle, CheckCircle2, Star, HelpCircle, Zap } 
 import { motion, AnimatePresence } from 'framer-motion';
 import DecryptedText from '../components/DecryptedText';
 import FormSuccessScreen from '../components/FormSuccessScreen';
+import { supabase } from '../lib/supabaseClient';
 
 const inputClass =
     'w-full bg-brand-bg/30 border border-brand-border/60 hover:bg-brand-bg/50 hover:border-brand-border backdrop-blur-sm rounded-lg px-4 py-3.5 text-brand-text focus:outline-none focus:ring-2 focus:ring-accent-blue/50 focus:ring-offset-2 focus:ring-offset-brand-bg transition-all';
@@ -174,112 +175,126 @@ const AIVoiceReceptionist = () => {
 <!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#0B0F19;font-family:'Segoe UI',Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0B0F19;padding:40px 0;">
+<body style="margin:0;padding:0;background:#f4f4f7;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f7;padding:40px 0;">
     <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.10);">
+
+        <!-- Header strip -->
+        <tr><td style="background:#1a1a2e;padding:0;"><div style="height:5px;background:linear-gradient(90deg,#6c3fc5,#00c2ff);"></div></td></tr>
 
         <!-- Header -->
         <tr>
-          <td style="background:linear-gradient(135deg,#00f0ff22,#9b51e022);border:1px solid rgba(255,255,255,0.1);border-radius:16px 16px 0 0;padding:32px 40px;text-align:center;">
-            <p style="margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#9b51e0;">Maikus AI — AI Voice Receptionist</p>
-            <h1 style="margin:0;font-size:28px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;">📬 New Service Request</h1>
-            <p style="margin:10px 0 0;font-size:14px;color:#9ca3af;">Someone just submitted a demo request from the website</p>
+          <td style="background:#1a1a2e;padding:36px 40px 28px;text-align:center;">
+            <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#8b5cf6;">Maikus AI — Internal Notification</p>
+            <h1 style="margin:0;font-size:24px;font-weight:800;color:#ffffff;">New AI Voice Receptionist Request</h1>
+            <p style="margin:10px 0 0;font-size:13px;color:#94a3b8;">A client has submitted a service request via the website</p>
           </td>
         </tr>
 
-        <!-- Alert badge -->
+        <!-- Alert bar -->
         <tr>
-          <td style="background:#111122;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);padding:16px 40px;">
-            <div style="background:#00f0ff12;border:1px solid #00f0ff33;border-radius:8px;padding:10px 16px;display:inline-block;">
-              <span style="color:#00f0ff;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">⚡ Action Required — Respond within 24 hours</span>
-            </div>
+          <td style="background:#1e2235;padding:14px 40px;border-top:1px solid rgba(255,255,255,0.06);">
+            <p style="margin:0;font-size:12px;font-weight:700;color:#f59e0b;letter-spacing:1.5px;text-transform:uppercase;">ACTION REQUIRED — Respond within 24 hours</p>
+          </td>
+        </tr>
+
+        <!-- Service label -->
+        <tr>
+          <td style="background:#ffffff;padding:24px 40px 8px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="background:#ede9fe;border-left:4px solid #7c3aed;border-radius:0 6px 6px 0;padding:12px 16px;">
+                  <p style="margin:0 0 2px;font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:1px;">Service Requested</p>
+                  <p style="margin:0;font-size:16px;font-weight:700;color:#3b0764;">AI Voice Receptionist</p>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
 
         ${quickCall ? `
-        <!-- Quick Call Section -->
+        <!-- Quick Call --->
         <tr>
-          <td style="background:#111122;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);padding:8px 40px 32px;">
-            <h2 style="font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px;margin-bottom:20px;">Quick Call Request</h2>
+          <td style="background:#ffffff;padding:24px 40px 32px;">
+            <p style="margin:0 0 16px;font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #e5e7eb;padding-bottom:10px;">Client Details</p>
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
-                  <span style="color:#9ca3af;font-size:13px;">Name</span>
-                  <p style="margin:4px 0 0;color:#ffffff;font-size:16px;font-weight:600;">${formData.quickName}</p>
+                <td style="padding:10px 0;border-bottom:1px solid #f3f4f6;">
+                  <p style="margin:0 0 2px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Name</p>
+                  <p style="margin:0;font-size:16px;font-weight:600;color:#111827;">${formData.quickName}</p>
                 </td>
               </tr>
               <tr>
-                <td style="padding:8px 0;">
-                  <span style="color:#9ca3af;font-size:13px;">Phone / WhatsApp</span>
-                  <p style="margin:4px 0 0;color:#00f0ff;font-size:20px;font-weight:700;">${formData.quickPhone}</p>
+                <td style="padding:10px 0;">
+                  <p style="margin:0 0 2px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Phone / WhatsApp</p>
+                  <p style="margin:0;font-size:20px;font-weight:700;color:#7c3aed;">${formData.quickPhone}</p>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
         ` : `
-        <!-- Full Form Details -->
+        <!-- Full Details -->
         <tr>
-          <td style="background:#111122;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);padding:8px 40px 24px;">
-            <h2 style="font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px;margin-bottom:20px;">Practice Details</h2>
+          <td style="background:#ffffff;padding:24px 40px 8px;">
+            <p style="margin:0 0 16px;font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #e5e7eb;padding-bottom:10px;">Practice / Business Details</p>
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td width="50%" style="padding:8px 12px 8px 0;vertical-align:top;">
-                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Practice / Business</span>
-                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.practiceName}</p>
+                <td width="50%" style="padding:8px 16px 8px 0;vertical-align:top;">
+                  <p style="margin:0 0 2px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Practice / Business</p>
+                  <p style="margin:0;font-size:15px;font-weight:600;color:#111827;">${formData.practiceName}</p>
                 </td>
                 <td width="50%" style="padding:8px 0;vertical-align:top;">
-                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Contact Person</span>
-                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.contactName}</p>
+                  <p style="margin:0 0 2px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Contact Person</p>
+                  <p style="margin:0;font-size:15px;font-weight:600;color:#111827;">${formData.contactName}</p>
                 </td>
               </tr>
               <tr>
-                <td width="50%" style="padding:8px 12px 8px 0;vertical-align:top;border-top:1px solid rgba(255,255,255,0.06);">
-                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Email</span>
-                  <p style="margin:4px 0 0;"><a href="mailto:${formData.email}" style="color:#00f0ff;font-size:15px;font-weight:600;text-decoration:none;">${formData.email}</a></p>
+                <td width="50%" style="padding:8px 16px 8px 0;vertical-align:top;border-top:1px solid #f3f4f6;">
+                  <p style="margin:0 0 2px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Email</p>
+                  <p style="margin:0;"><a href="mailto:${formData.email}" style="font-size:14px;font-weight:600;color:#7c3aed;text-decoration:none;">${formData.email}</a></p>
                 </td>
-                <td width="50%" style="padding:8px 0;vertical-align:top;border-top:1px solid rgba(255,255,255,0.06);">
-                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Phone / WhatsApp</span>
-                  <p style="margin:4px 0 0;color:#00f0ff;font-size:15px;font-weight:700;">${formData.phone}</p>
+                <td width="50%" style="padding:8px 0;vertical-align:top;border-top:1px solid #f3f4f6;">
+                  <p style="margin:0 0 2px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Phone / WhatsApp</p>
+                  <p style="margin:0;font-size:15px;font-weight:700;color:#7c3aed;">${formData.phone}</p>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
-          <td style="background:#111122;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);padding:8px 40px 24px;">
-            <h2 style="font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px;margin-bottom:20px;">Call Profile</h2>
+          <td style="background:#ffffff;padding:16px 40px 8px;">
+            <p style="margin:0 0 16px;font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #e5e7eb;padding-bottom:10px;">Call Requirements</p>
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td width="50%" style="padding:8px 12px 8px 0;vertical-align:top;">
-                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Industry</span>
-                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.industry}</p>
+                <td width="50%" style="padding:8px 16px 8px 0;vertical-align:top;">
+                  <p style="margin:0 0 2px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Industry</p>
+                  <p style="margin:0;font-size:15px;font-weight:600;color:#111827;">${formData.industry}</p>
                 </td>
                 <td width="50%" style="padding:8px 0;vertical-align:top;">
-                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Primary Goal</span>
-                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.goal}</p>
+                  <p style="margin:0 0 2px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Primary Goal</p>
+                  <p style="margin:0;font-size:15px;font-weight:600;color:#111827;">${formData.goal}</p>
                 </td>
               </tr>
               <tr>
-                <td width="50%" style="padding:8px 12px 8px 0;vertical-align:top;border-top:1px solid rgba(255,255,255,0.06);">
-                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Monthly Call Volume</span>
-                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.callVolume}</p>
+                <td width="50%" style="padding:8px 16px 8px 0;vertical-align:top;border-top:1px solid #f3f4f6;">
+                  <p style="margin:0 0 2px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Monthly Call Volume</p>
+                  <p style="margin:0;font-size:15px;font-weight:600;color:#111827;">${formData.callVolume}</p>
                 </td>
-                <td width="50%" style="padding:8px 0;vertical-align:top;border-top:1px solid rgba(255,255,255,0.06);">
-                  <span style="color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Current Setup</span>
-                  <p style="margin:4px 0 0;color:#ffffff;font-size:15px;font-weight:600;">${formData.currentSetup}</p>
+                <td width="50%" style="padding:8px 0;vertical-align:top;border-top:1px solid #f3f4f6;">
+                  <p style="margin:0 0 2px;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Current Setup</p>
+                  <p style="margin:0;font-size:15px;font-weight:600;color:#111827;">${formData.currentSetup}</p>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
-        <!-- Plan -->
         <tr>
-          <td style="background:#111122;border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);padding:8px 40px 32px;">
-            <h2 style="font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9ca3af;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px;margin-bottom:20px;">Plan Selected</h2>
-            <div style="background:linear-gradient(135deg,#9b51e022,#00f0ff11);border:1px solid #9b51e044;border-radius:10px;padding:14px 20px;display:inline-block;">
-              <span style="color:#9b51e0;font-size:20px;font-weight:800;">${chosenPlan}</span>
+          <td style="background:#ffffff;padding:16px 40px 32px;">
+            <p style="margin:0 0 12px;font-size:13px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #e5e7eb;padding-bottom:10px;">Plan Selected</p>
+            <div style="display:inline-block;background:#ede9fe;border:1px solid #c4b5fd;border-radius:8px;padding:10px 20px;">
+              <p style="margin:0;font-size:17px;font-weight:800;color:#5b21b6;">${chosenPlan}</p>
             </div>
           </td>
         </tr>
@@ -287,9 +302,9 @@ const AIVoiceReceptionist = () => {
 
         <!-- Footer -->
         <tr>
-          <td style="background:#0B0F19;border:1px solid rgba(255,255,255,0.1);border-top:none;border-radius:0 0 16px 16px;padding:24px 40px;text-align:center;">
-            <p style="margin:0;color:#4b5563;font-size:12px;">This email was auto-generated by the Maikus AI website.</p>
-            <p style="margin:6px 0 0;color:#4b5563;font-size:12px;">© ${new Date().getFullYear()} Maikus AI Solutions</p>
+          <td style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:20px 40px;text-align:center;">
+            <p style="margin:0;color:#9ca3af;font-size:12px;">Auto-generated by the Maikus AI website. Do not reply to this email.</p>
+            <p style="margin:6px 0 0;color:#9ca3af;font-size:12px;">&copy; ${new Date().getFullYear()} Maikus AI Solutions</p>
           </td>
         </tr>
 
@@ -299,8 +314,102 @@ const AIVoiceReceptionist = () => {
 </body>
 </html>`;
 
-        try {
-            const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+        // ── Build client confirmation email ──
+        const clientName = quickCall ? formData.quickName : formData.contactName;
+        const clientEmail = quickCall ? '' : formData.email;
+
+        const clientHtmlBody = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f4f4f7;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f7;padding:40px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.10);">
+
+        <!-- Top accent strip -->
+        <tr><td style="padding:0;"><div style="height:5px;background:linear-gradient(90deg,#6c3fc5,#00c2ff);"></div></td></tr>
+
+        <!-- Header -->
+        <tr>
+          <td style="background:#ffffff;padding:40px 40px 24px;text-align:center;border-bottom:1px solid #e5e7eb;">
+            <p style="margin:0 0 12px;font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#7c3aed;">Maikus AI Solutions</p>
+            <h1 style="margin:0 0 10px;font-size:26px;font-weight:800;color:#111827;">Your Request Has Been Received</h1>
+            <p style="margin:0;font-size:15px;color:#6b7280;">Dear ${clientName}, thank you for choosing Maikus AI.</p>
+          </td>
+        </tr>
+
+        <!-- Service confirmation banner -->
+        <tr>
+          <td style="background:#ede9fe;padding:18px 40px;border-bottom:1px solid #ddd6fe;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td>
+                  <p style="margin:0 0 2px;font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:1px;">Service Requested</p>
+                  <p style="margin:0;font-size:18px;font-weight:800;color:#3b0764;">AI Voice Receptionist</p>
+                </td>
+                <td align="right">
+                  <div style="background:#7c3aed;border-radius:6px;padding:8px 16px;display:inline-block;">
+                    <p style="margin:0;font-size:11px;color:#ede9fe;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Plan</p>
+                    <p style="margin:2px 0 0;font-size:15px;color:#ffffff;font-weight:800;">${chosenPlan}</p>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Body copy -->
+        <tr>
+          <td style="background:#ffffff;padding:32px 40px;">
+            <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.7;">We have successfully received your request for the <strong style="color:#5b21b6;">AI Voice Receptionist</strong> service. This means an intelligent AI system will be trained specifically for your business to answer inbound calls, book appointments, and handle queries — all automatically, 24/7.</p>
+            <p style="margin:0 0 24px;font-size:15px;color:#374151;line-height:1.7;">Our team is reviewing your details and will get in touch with you <strong>within 24 hours</strong> to walk you through the next steps and set up your personalised demo.</p>
+
+            <!-- Steps -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;">
+              <tr><td style="padding:16px 20px;border-bottom:1px solid #e5e7eb;">
+                <p style="margin:0;font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:1px;">What Happens Next</p>
+              </td></tr>
+              <tr><td style="padding:14px 20px;border-bottom:1px solid #e5e7eb;">
+                <table cellpadding="0" cellspacing="0"><tr>
+                  <td style="width:28px;height:28px;background:#7c3aed;border-radius:50%;text-align:center;vertical-align:middle;font-size:13px;font-weight:800;color:#fff;">1</td>
+                  <td style="padding-left:12px;font-size:14px;color:#374151;">Our team reviews your submission and call requirements</td>
+                </tr></table>
+              </td></tr>
+              <tr><td style="padding:14px 20px;border-bottom:1px solid #e5e7eb;">
+                <table cellpadding="0" cellspacing="0"><tr>
+                  <td style="width:28px;height:28px;background:#7c3aed;border-radius:50%;text-align:center;vertical-align:middle;font-size:13px;font-weight:800;color:#fff;">2</td>
+                  <td style="padding-left:12px;font-size:14px;color:#374151;">We configure and customise your AI Voice Receptionist for your practice</td>
+                </tr></table>
+              </td></tr>
+              <tr><td style="padding:14px 20px;">
+                <table cellpadding="0" cellspacing="0"><tr>
+                  <td style="width:28px;height:28px;background:#7c3aed;border-radius:50%;text-align:center;vertical-align:middle;font-size:13px;font-weight:800;color:#fff;">3</td>
+                  <td style="padding-left:12px;font-size:14px;color:#374151;">We call you within <strong style="color:#059669;">24 hours</strong> with a live demo of your AI Receptionist</td>
+                </tr></table>
+              </td></tr>
+            </table>
+
+            <p style="margin:24px 0 0;font-size:14px;color:#6b7280;">Have an urgent query? Simply reply to this email or contact us via WhatsApp. We are happy to help.</p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:20px 40px;text-align:center;">
+            <p style="margin:0;color:#9ca3af;font-size:12px;">You received this email because you submitted a service request at maikus.ai</p>
+            <p style="margin:6px 0 0;color:#9ca3af;font-size:12px;">&copy; ${new Date().getFullYear()} Maikus AI Solutions</p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+        const sendEmail = (to: { email: string; name: string }[], subject: string, htmlContent: string) =>
+            fetch('https://api.brevo.com/v3/smtp/email', {
                 method: 'POST',
                 headers: {
                     'accept': 'application/json',
@@ -308,16 +417,58 @@ const AIVoiceReceptionist = () => {
                     'content-type': 'application/json',
                 },
                 body: JSON.stringify({
-                    sender: { name: 'Maikus AI Website', email: SENDER_EMAIL },
-                    to: [{ email: SENDER_EMAIL, name: 'Maikus AI Team' }],
-                    subject: quickCall
-                        ? `⚡ Quick Call Request – ${formData.quickName}`
-                        : `📬 New Demo Request – ${formData.practiceName} (${chosenPlan})`,
-                    htmlContent: htmlBody,
+                    sender: { name: 'Maikus AI', email: SENDER_EMAIL },
+                    to,
+                    subject,
+                    htmlContent,
                 }),
             });
 
-            if (res.ok) {
+        try {
+            const ownerSubject = quickCall
+                ? `AI Voice Receptionist – Quick Call Request from ${formData.quickName}`
+                : `AI Voice Receptionist – New Service Request from ${formData.practiceName} (${chosenPlan})`;
+
+            const clientSubject = `Your AI Voice Receptionist Request – Maikus AI will contact you within 24 hours`;
+
+            // Supabase row
+            const supabasePayload = quickCall
+                ? {
+                    type: 'quick_call',
+                    contact_name: formData.quickName,
+                    phone: formData.quickPhone,
+                    plan_selected: 'Quick Call',
+                  }
+                : {
+                    type: 'full_request',
+                    practice_name: formData.practiceName,
+                    contact_name: formData.contactName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    industry: formData.industry,
+                    primary_goal: formData.goal,
+                    call_volume: formData.callVolume,
+                    current_setup: formData.currentSetup,
+                    plan_selected: chosenPlan,
+                    contact_for_pricing: contactForPricing,
+                  };
+
+            const tasks: Promise<unknown>[] = [
+                // 1. Owner email
+                sendEmail([{ email: SENDER_EMAIL, name: 'Maikus AI Team' }], ownerSubject, htmlBody),
+                // 2. Supabase insert
+                (async () => { const r = await supabase.from('service_requests').insert([supabasePayload]); if (r.error) throw r.error; })(),
+            ];
+
+            // 3. Client email (only if we have their email)
+            if (clientEmail) {
+                tasks.push(sendEmail([{ email: clientEmail, name: clientName }], clientSubject, clientHtmlBody));
+            }
+
+            const results = await Promise.allSettled(tasks);
+            const anyFailed = results.some(r => r.status === 'rejected');
+
+            if (!anyFailed) {
                 setSubmitState('success');
                 setSubmitted(true);
                 setFormData({ quickName: '', quickPhone: '', practiceName: '', contactName: '', email: '', phone: '', industry: '', goal: '', callVolume: '', currentSetup: '' });
