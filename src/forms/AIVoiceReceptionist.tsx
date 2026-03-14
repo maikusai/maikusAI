@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Phone, ShieldCheck, Clock, CheckCircle, CheckCircle2, DollarSign, ArrowRight, Star, HelpCircle, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import DecryptedText from '../components/DecryptedText';
 
 const inputClass =
     'w-full bg-brand-bg/30 border border-brand-border/60 hover:bg-brand-bg/50 hover:border-brand-border backdrop-blur-sm rounded-lg px-4 py-3.5 text-brand-text focus:outline-none focus:ring-2 focus:ring-accent-blue/50 focus:ring-offset-2 focus:ring-offset-brand-bg transition-all';
@@ -109,11 +110,43 @@ const smoothScroll = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 };
 
+const AnimatedWaveform = () => {
+    return (
+        <div className="flex items-center gap-1 h-12">
+            {[...Array(9)].map((_, i) => (
+                <motion.div
+                    key={i}
+                    className="w-1.5 bg-accent-blue rounded-full"
+                    animate={{
+                        height: ['20%', '100%', '20%']
+                    }}
+                    transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: i * 0.1
+                    }}
+                />
+            ))}
+        </div>
+    );
+};
+
 const AIVoiceReceptionist = () => {
     const [quickCall, setQuickCall] = useState(false);
     const [selectedPlan, setSelectedPlan] = useState<string>('growth');
     const [contactForPricing, setContactForPricing] = useState(false);
     const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+    const [demoPhone, setDemoPhone] = useState('');
+    const [demoState, setDemoState] = useState<'idle' | 'calling' | 'connected'>('idle');
+
+    const handleDemoCall = (e: React.FormEvent) => {
+        e.preventDefault();
+        if(!demoPhone) return;
+        setDemoState('calling');
+        setTimeout(() => setDemoState('connected'), 3000);
+    };
 
     return (
         <div className="pt-24 pb-16">
@@ -132,9 +165,9 @@ const AIVoiceReceptionist = () => {
                     </div>
 
                     <div className="flex justify-center mb-6">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-green/10 border border-accent-green/40 text-accent-green text-xs font-bold tracking-widest uppercase">
-                            <ShieldCheck className="w-4 h-4" />
-                            Enterprise-Grade Security &amp; Compliance
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-green/10 border border-accent-green/40 text-accent-green text-xs font-bold tracking-widest uppercase mb-2">
+                            <ShieldCheck className="w-4 h-4 shrink-0" />
+                            <DecryptedText text="HIPAA-Compliant: All patient data is fully encrypted." animateOn="view" speed={60} maxIterations={15} />
                         </div>
                     </div>
 
@@ -199,6 +232,79 @@ const AIVoiceReceptionist = () => {
                             <p className="text-brand-text-muted leading-relaxed">{b.desc}</p>
                         </motion.div>
                     ))}
+                </div>
+            </section>
+
+            {/* LIVE DEMO SECTION */}
+            <section id="live-demo" className="py-24 relative bg-brand-bg-alt border-t border-brand-border overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent-blue/5 via-transparent to-transparent"></div>
+                
+                <div className="container relative mx-auto px-6 lg:px-12 text-center">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-purple/10 border border-accent-purple/20 text-accent-purple text-sm font-bold tracking-widest uppercase mb-6">
+                        Interactive Experience
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-6">Experience the <span className="text-gradient">AI Receptionist Live</span></h2>
+                    <p className="text-brand-text-muted text-lg max-w-2xl mx-auto mb-12">Enter your number and our AI will call you instantly to show you how human it sounds.</p>
+                
+                    <div className="max-w-md mx-auto relative z-10">
+                        <AnimatePresence mode="wait">
+                            {demoState === 'idle' && (
+                                <motion.form 
+                                    key="form"
+                                    initial={{opacity: 0, y: 20}}
+                                    animate={{opacity: 1, y: 0}}
+                                    exit={{opacity: 0, scale: 0.95}}
+                                    onSubmit={handleDemoCall}
+                                    className="flex flex-col gap-4"
+                                >
+                                    <input 
+                                        type="tel" 
+                                        value={demoPhone}
+                                        onChange={e => setDemoPhone(e.target.value)}
+                                        placeholder="Enter your mobile number" 
+                                        className="w-full bg-brand-bg border border-brand-border rounded-xl px-6 py-5 text-lg text-brand-text outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-all"
+                                        required
+                                    />
+                                    <button type="submit" className="btn-primary w-full py-5 text-lg shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_40px_rgba(0,240,255,0.5)] flex items-center justify-center gap-3">
+                                        <Phone className="w-5 h-5" /> Receive Demo Call
+                                    </button>
+                                </motion.form>
+                            )}
+
+                            {demoState === 'calling' && (
+                                <motion.div 
+                                    key="calling"
+                                    initial={{opacity: 0, scale: 0.95}}
+                                    animate={{opacity: 1, scale: 1}}
+                                    className="glass-card py-12 flex flex-col items-center justify-center border-accent-blue/40 shadow-[0_0_50px_rgba(0,240,255,0.2)]"
+                                >
+                                    <div className="w-20 h-20 rounded-full bg-accent-blue/20 flex items-center justify-center mb-6 animate-pulse">
+                                        <Phone className="w-8 h-8 text-accent-blue animate-bounce" />
+                                    </div>
+                                    <h3 className="text-2xl font-bold mb-2">Connecting...</h3>
+                                    <p className="text-brand-text-muted">You will receive a call momentarily.</p>
+                                </motion.div>
+                            )}
+
+                            {demoState === 'connected' && (
+                                <motion.div 
+                                    key="connected"
+                                    initial={{opacity: 0, scale: 0.95}}
+                                    animate={{opacity: 1, scale: 1}}
+                                    className="glass-card py-12 flex flex-col items-center justify-center border-accent-green/40 shadow-[0_0_50px_rgba(16,185,129,0.2)]"
+                                >
+                                    <AnimatedWaveform />
+                                    <h3 className="text-2xl font-bold mt-8 mb-2 text-brand-text">Call in Progress</h3>
+                                    <p className="text-brand-text-muted mb-6">Speak to the AI normally.</p>
+                                    <div className="flex items-center gap-2 text-accent-green text-xs font-bold bg-accent-green/10 px-4 py-2 rounded-full mb-8 shadow-sm">
+                                        <ShieldCheck className="w-4 h-4 shrink-0" />
+                                        <DecryptedText text="Live Audio Stream: Fully encrypted and privately processed." animateOn="view" speed={40} maxIterations={12} />
+                                    </div>
+                                    <button onClick={(e: any) => {e.preventDefault(); setDemoState('idle');}} className="btn-secondary py-2 px-6 text-sm flex items-center gap-2"><Phone className="w-4 h-4"/> End Call Simulation</button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
                 </div>
             </section>
 
@@ -547,10 +653,18 @@ const AIVoiceReceptionist = () => {
                 </div>
             </section>
 
+            {/* Bottom Security Notice */}
+            <div className="container mx-auto px-6 mt-16 mb-8 text-center flex items-center justify-center">
+                <div className="flex items-center gap-2 text-accent-green text-sm font-bold bg-accent-green/5 border border-accent-green/20 px-6 py-3 rounded-full">
+                    <ShieldCheck className="w-5 h-5 shrink-0" />
+                    <DecryptedText text="HIPAA-Compliant: All patient data is encrypted locally and completely safe." animateOn="view" speed={60} maxIterations={15} />
+                </div>
+            </div>
+
             {/* Floating CTA */}
             <a
                 href="/contact"
-                className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-brand-glass backdrop-blur-lg border border-accent-purple/50 px-5 py-3.5 rounded-full hover:-translate-y-1 transition-all group"
+                className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-brand-glass backdrop-blur-lg border border-accent-purple/50 px-5 py-3.5 rounded-full hover:-translate-y-1 transition-all group shadow-xl"
             >
                 <Phone className="w-5 h-5 text-accent-purple" />
                 <span className="font-semibold text-brand-text">Doubt? Let's talk!</span>

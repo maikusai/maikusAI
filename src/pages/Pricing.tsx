@@ -1,147 +1,75 @@
 import { motion } from 'framer-motion';
-import { CheckCircle2, Zap, ShieldCheck, Phone, ArrowRight, HelpCircle } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, Phone, ArrowRight, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-
 const Pricing = () => {
     const [openFaq, setOpenFaq] = useState<number | null>(null);
 
     const voicePlans = [
         {
-            name: 'Starter',
-            monthly: '$149',
-            setup: '$1,000 one-time setup',
-            minutes: '50 mins/mo included',
-            overage: '$0.60 / min overage',
-            features: [
-                '1 AI Receptionist Bot',
-                'Dedicated Phone Number (Twilio)',
-                'Appointment Booking Script',
-                'Email Support',
-                'Basic Analytics Dashboard',
-                'HIPAA-Ready Infrastructure',
-            ],
-            cta: 'Get Started',
-            popular: false,
-            color: 'accent-blue',
-        },
-        {
+            id: 'growth',
             name: 'Growth',
-            monthly: '$349',
-            setup: '$1,000 one-time setup',
-            minutes: '200 mins/mo included',
-            overage: '$0.55 / min overage',
+            monthly: '₹15,000',
+            setup: '₹20,000 one-time setup',
+            minutes: '1,500 mins/mo included',
+            overage: 'Unlimited within fair usage',
             features: [
                 '1 AI Receptionist Bot',
-                'Dedicated Phone Number (Twilio)',
+                'Dedicated Phone Number',
                 'Custom Script + Persona',
-                'Priority Email & Chat Support',
                 'Call Analytics + Recordings',
                 'HIPAA-Ready Infrastructure',
                 'Monthly Performance Report',
-                'Stripe Metered Billing',
             ],
             cta: 'Most Popular — Start Now',
             popular: true,
             color: 'accent-purple',
         },
         {
-            name: 'Clinic Pro',
-            monthly: '$699',
-            setup: '$1,500 one-time setup',
+            id: 'standard',
+            name: 'Standard',
+            monthly: '₹10,000',
+            setup: '₹25,000 one-time setup',
             minutes: '500 mins/mo included',
-            overage: '$0.50 / min overage',
+            overage: '₹20 / min overage',
             features: [
-                '2 AI Receptionist Bots',
-                '2 Dedicated Phone Numbers',
-                'Custom Script + Persona + Tone',
-                'Priority Support with SLA',
-                'Full Call Analytics Dashboard',
+                '1 AI Receptionist Bot',
+                'Dedicated Phone Number',
+                'Appointment Booking Script',
+                'Basic Analytics Dashboard',
+                'Email Support',
                 'HIPAA-Ready Infrastructure',
-                'Dedicated Account Manager',
-                'Quarterly Strategy Review',
             ],
-            cta: 'Book Strategy Call',
+            cta: 'Get Started',
             popular: false,
             color: 'accent-blue',
-        },
-        {
-            name: 'Enterprise',
-            monthly: 'Custom',
-            setup: 'Custom',
-            minutes: 'Unlimited',
-            overage: 'Negotiated',
-            features: [
-                'Unlimited Bots',
-                'White-Label Option',
-                'Custom SLA & Uptime Guarantee',
-                'Dedicated Infrastructure',
-                'Full HIPAA BAA Signing',
-                '24/7 Priority Support Line',
-                'Private LLM Option',
-                'Custom Integrations (EHR, CRM)',
-            ],
-            cta: 'Contact Sales',
-            popular: false,
-            color: 'accent-purple',
-        },
-    ];
-
-    const automationPlans = [
-        {
-            name: 'Starter',
-            price: '₹15,000',
-            label: 'setup',
-            target: 'For small businesses',
-            features: ['Basic Email Automation', 'Standard Web Chatbot', 'Single Workflow'],
-            cta: 'Start Now',
-            to: '/contact',
-        },
-        {
-            name: 'Growth',
-            price: '₹35,000',
-            label: 'setup',
-            target: 'For scaling companies',
-            features: ['Advanced Lead Gen Funnels', 'AI Sales Chatbot', 'Full CRM Integration'],
-            cta: 'Start Now',
-            to: '/contact',
-            popular: true,
-        },
-        {
-            name: 'Enterprise',
-            price: 'Custom',
-            label: 'pricing',
-            target: 'Custom deployment',
-            features: ['Custom Private LLMs', 'Dedicated Infrastructure', '24/7 Priority Support'],
-            cta: 'Contact Sales',
-            to: '/contact',
         },
     ];
 
     const faqs = [
         {
-            q: 'What is Vapi and who actually pays for it?',
-            a: 'Vapi is the AI calling infrastructure we use to power your receptionist bot. Under the Managed Service model, we pay Vapi on your behalf and bill you a transparent monthly fee + per-minute usage. You never need a Vapi account.',
+            q: 'Why should I use an AI Receptionist instead of a human?',
+            a: 'Unlike a human, an AI Receptionist never takes breaks, never sleeps, and handles multiple calls simultaneously without ever putting patients on hold. This ensures you capture every single lead and never miss out on valuable revenue.',
         },
         {
             q: 'Is this actually HIPAA compliant?',
-            a: 'We use Vapi\'s HIPAA-compliant infrastructure ($1,000/yr plan) combined with encrypted Twilio phone numbers. Patient names, symptoms, and appointment data are encrypted at rest and in transit. We can also sign a Business Associate Agreement (BAA) on Growth+ plans.',
+            a: 'Yes, our platform is built on fully HIPAA-compliant infrastructure combined with securely encrypted phone numbers. Patient names, symptoms, and appointment data are strictly encrypted at rest and in transit, keeping your data absolutely safe.',
         },
         {
             q: 'What happens if I use more minutes than my plan?',
-            a: 'Overage minutes are billed at the per-minute rate shown in your plan (e.g. $0.55/min on Growth). We send you a usage report mid-month so there are no surprises. You can also upgrade your plan at any time.',
+            a: 'Overage minutes are billed at a transparent rate (e.g. ₹20/min on the Standard plan). We send you a usage report so there are no surprises. You can easily upgrade your plan if you require higher capacity.',
         },
         {
-            q: 'How does payment work? Will I get an invoice?',
-            a: 'We use Stripe for automated billing. Your monthly platform fee is charged on the 1st of each month. Overage usage is calculated and added to the following month\'s invoice. You receive itemized PDF invoices by email.',
+            q: 'How does payment work?',
+            a: 'We use automated billing. Your monthly platform fee is charged on the 1st of each month. Overage usage is calculated and added to the following month\'s invoice. You receive itemized PDF invoices by email.',
         },
         {
             q: 'Can my patients tell they\'re talking to an AI?',
-            a: 'Our bots are trained to sound natural, warm, and professional. We recommend being transparent — most patients appreciate the instant response. That said, the bot is designed to hand off to a human for complex or sensitive queries.',
+            a: 'Our bots are fine-tuned to sound natural, warm, and highly professional. Most patients appreciate the instant response and efficient booking process. The bot can also efficiently route calls to a human staff member for complex queries.',
         },
         {
             q: 'What industries do you support?',
-            a: 'We\'ve deployed bots for dental clinics, medical GP offices, real estate offices, law firms, salons, and restaurants. If your business receives inbound calls and handles appointments or FAQs — we can automate it.',
+            a: 'We\'ve deployed AI receptionists for dental clinics, medical offices, real estate agencies, salons, law firms, and restaurants. If your business receives inbound calls and needs to handle appointments and FAQs, we can completely automate it.',
         },
     ];
 
@@ -170,7 +98,7 @@ const Pricing = () => {
                     <p className="text-brand-text-muted ml-11">For clinics, dentists, real estate offices, and any business that receives inbound calls.</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-24">
                     {voicePlans.map((plan, i) => (
                         <motion.div
                             key={i}
@@ -216,7 +144,7 @@ const Pricing = () => {
                             </div>
 
                             <Link
-                                to="/services/ai-receptionist"
+                                to="/services/ai-voice-receptionist"
                                 className={plan.popular ? 'btn-primary w-full py-3 text-center' : 'btn-secondary w-full py-3 text-center'}
                             >
                                 {plan.cta}
@@ -225,91 +153,7 @@ const Pricing = () => {
                     ))}
                 </div>
 
-                {/* ─── Profit Transparency Note ─── */}
-                <div className="glass-card bg-brand-bg-alt p-8 md:p-10 border border-accent-blue/20 mb-24 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-blue to-accent-purple" />
-                    <div className="flex flex-col md:flex-row gap-8 items-start">
-                        <div className="w-12 h-12 rounded-xl bg-accent-blue/10 flex items-center justify-center shrink-0">
-                            <Zap className="w-6 h-6 text-accent-blue" />
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-bold text-brand-text mb-3">How the "Spread" Model Guarantees Your Profit</h3>
-                            <p className="text-brand-text-muted mb-4">
-                                Under our Managed Service model, you never need to worry about Vapi bills eating your margin. Here's the math:
-                            </p>
-                            <div className="grid sm:grid-cols-3 gap-4">
-                                {[
-                                    { label: 'Our Vapi Cost', value: '~$0.20 / min', color: 'text-accent-red' },
-                                    { label: 'What We Charge You', value: '$0.55–$0.60 / min', color: 'text-brand-text' },
-                                    { label: 'Our Margin per Minute', value: '$0.35–$0.40 profit', color: 'text-accent-green' },
-                                ].map((item, i) => (
-                                    <div key={i} className="bg-brand-bg/40 rounded-xl p-4 border border-brand-border">
-                                        <div className="text-xs text-brand-text-muted mb-1 uppercase tracking-wide font-semibold">{item.label}</div>
-                                        <div className={`text-xl font-bold ${item.color}`}>{item.value}</div>
-                                    </div>
-                                ))}
-                            </div>
-                            <p className="text-brand-text-muted text-sm mt-4">
-                                On top of the per-minute spread, the monthly platform fee covers your management time, HIPAA infrastructure, and support costs — ensuring you are always profitable.
-                            </p>
-                        </div>
-                    </div>
-                </div>
 
-                {/* ─── General AI Automation Plans ─── */}
-                <div className="mb-6">
-                    <div className="flex items-center gap-3 mb-3">
-                        <div className="w-8 h-8 rounded-lg bg-accent-blue/10 flex items-center justify-center">
-                            <Zap className="w-4 h-4 text-accent-blue" />
-                        </div>
-                        <h2 className="text-2xl font-bold text-brand-text">General AI Automation Plans</h2>
-                    </div>
-                    <p className="text-brand-text-muted ml-11">Email automation, chatbots, lead funnels, and workflow integrations.</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24 max-w-5xl mx-auto">
-                    {automationPlans.map((plan, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                            className={`glass-card flex flex-col items-center p-10 relative overflow-hidden ${plan.popular
-                                ? 'border-accent-blue shadow-[0_0_50px_rgba(0,240,255,0.1)] md:-translate-y-4'
-                                : 'border-brand-border opacity-90 hover:opacity-100 transition-opacity'
-                                }`}
-                        >
-                            {plan.popular && (
-                                <div className="absolute top-0 w-full bg-gradient-to-r from-accent-blue to-accent-purple text-brand-text text-xs font-bold text-center py-1 rounded-t-2xl">
-                                    MOST POPULAR
-                                </div>
-                            )}
-                            <div className={`w-full text-center ${plan.popular ? 'mt-4' : ''}`}>
-                                <h3 className="text-2xl font-bold text-brand-text mb-2">{plan.name}</h3>
-                                <div className="text-brand-text-muted text-sm mb-6">{plan.target}</div>
-                                <div className="text-4xl font-bold text-brand-text mb-8">
-                                    {plan.price}
-                                    <span className="text-lg text-brand-text-muted font-normal"> {plan.label}</span>
-                                </div>
-                                <ul className="text-left space-y-4 mb-8 text-brand-text-muted w-full">
-                                    {plan.features.map((f, j) => (
-                                        <li key={j} className="flex items-center gap-2">
-                                            <Zap className="w-4 h-4 text-accent-blue" />
-                                            {f}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <Link
-                                to={plan.to}
-                                className={plan.popular ? 'btn-primary w-full py-3 text-center' : 'btn-secondary w-full py-3 text-center'}
-                            >
-                                {plan.cta}
-                            </Link>
-                        </motion.div>
-                    ))}
-                </div>
 
                 {/* ─── FAQ ─── */}
                 <div className="max-w-3xl mx-auto mb-20">
@@ -352,7 +196,7 @@ const Pricing = () => {
                     <p className="text-brand-text-muted mb-8 max-w-xl mx-auto">
                         Get a free custom demo built for your practice in 48 hours. No commitment required.
                     </p>
-                    <Link to="/services/ai-receptionist" className="btn-primary py-4 px-10">
+                    <Link to="/services/ai-voice-receptionist" className="btn-primary py-4 px-10">
                         Get Free Demo <ArrowRight className="inline ml-2 w-4 h-4" />
                     </Link>
                 </div>

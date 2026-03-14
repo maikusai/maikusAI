@@ -20,9 +20,10 @@ const Navbar = ({ theme, toggleTheme }: { theme: string; toggleTheme: () => void
 
     const navLinks = [
         { name: 'Home', path: '/' },
-        { name: 'Services', path: '/services' },
-        { name: 'About', path: '/about' },
-        { name: 'Blog', path: '/blog' }
+        { name: 'AI Receptionist', path: '/services/ai-voice-receptionist' },
+        { name: 'Pricing', path: '/pricing' },
+        { name: 'Blog', path: '/blog' },
+        { name: 'About', path: '/about' }
     ];
 
     return (
