@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import DecryptedText from '../components/DecryptedText';
 import FormSuccessScreen from '../components/FormSuccessScreen';
 import { supabase } from '../lib/supabaseClient';
+import confetti from 'canvas-confetti';
 
 const inputClass =
     'w-full bg-brand-bg/30 border border-brand-border/60 hover:bg-brand-bg/50 hover:border-brand-border backdrop-blur-sm rounded-lg px-4 py-3.5 text-brand-text focus:outline-none focus:ring-2 focus:ring-accent-blue/50 focus:ring-offset-2 focus:ring-offset-brand-bg transition-all';
@@ -347,7 +348,7 @@ const AIVoiceReceptionist = () => {
           <!-- Header Section -->
           <tr>
             <td class="content-padding" style="padding:40px 40px 30px;text-align:center;border-bottom:1px solid #f0f0f5;">
-              <img src="https://maikusai.onrender.com/logotransparent.png" alt="Maikus AI Logo" style="display:block;margin:0 auto 20px auto;max-width:150px;width:100%;height:auto;" />
+              <img src="https://github.com/maikusai/maikusAI/blob/main/src/assets/logotransparent.png?raw=true" alt="Maikus AI Logo" style="display:block;margin:0 auto 20px auto;max-width:150px;width:100%;height:auto;" />
               <p style="margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7c3aed;">Maikus AI Solutions</p>
               <h1 class="header-title" style="margin:0 0 12px;font-size:28px;font-weight:800;color:#111827;line-height:1.2;">Request Received</h1>
               <p style="margin:0;font-size:16px;color:#4b5563;">Hi ${clientName}, we've received your request for an AI Receptionist.</p>
@@ -526,6 +527,33 @@ const AIVoiceReceptionist = () => {
                 setSubmitState('success');
                 setSubmitted(true);
                 setFormData({ quickName: '', quickPhone: '', practiceName: '', contactName: '', email: '', phone: '', industry: '', goal: '', callVolume: '', currentSetup: '' });
+                smoothScroll('intake-form');
+                
+                const duration = 3 * 1000;
+                const end = Date.now() + duration;
+
+                const frame = () => {
+                    confetti({
+                        particleCount: 5,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 },
+                        colors: ['#00f0ff', '#9b51e0', '#4ade80']
+                    });
+                    confetti({
+                        particleCount: 5,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 },
+                        colors: ['#00f0ff', '#9b51e0', '#4ade80']
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                };
+                frame();
+
             } else {
                 setSubmitState('error');
             }
