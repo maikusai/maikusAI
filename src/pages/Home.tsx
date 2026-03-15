@@ -348,7 +348,7 @@ const Home = () => {
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-border/30 border border-brand-border text-brand-text-muted text-[10px] font-bold tracking-widest uppercase mb-6">
                             The Full Platform
                         </div>
-                        <h2 className="text-3xl md:text-5xl font-bold mb-6">Additional <span className="bg-white text-black px-5">AI Automations</span></h2>
+                        <h2 className="text-3xl md:text-5xl font-bold mb-6">Additional <span className="bg-white text-black px-3 rounded-md">AI Automations</span></h2>
                         <p className="text-brand-text-muted text-lg max-w-2xl mx-auto">We are building an entire ecosystem of AI tools. Coming soon.</p>
                     </div>
 
@@ -384,7 +384,7 @@ const Home = () => {
                     </div>
                     <div className="flex items-center justify-center gap-2 dark:text-accent-green text-sm font-bold bg-accent-green/10 px-6 py-3 rounded-full mx-auto w-max max-w-full">
                         <ShieldCheck className="w-5 h-5 shrink-0" />
-                        <DecryptedText text="HIPAA-Compliant: All patient data is fully decrypted locally and safe." animateOn="view" speed={60} maxIterations={15} />
+                        <DecryptedText text="HIPAA-Protected" animateOn="view" speed={60} maxIterations={5} />
                     </div>
                 </div>
             </section>

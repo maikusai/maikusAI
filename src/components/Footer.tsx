@@ -22,13 +22,13 @@ const Footer = () => {
                             We build intelligent automation systems that generate leads, reply to customers, create content, and scale your operations — 24/7 on autopilot.
                         </p>
                         <div className="flex items-center gap-4">
-                            <a href="#" className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-text-muted hover:text-brand-text hover:border-accent-blue hover:bg-accent-blue/10 transition-all">
+                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-text-muted hover:text-brand-text hover:border-accent-blue hover:bg-accent-blue/10 transition-all">
                                 <Twitter className="w-4 h-4" />
                             </a>
-                            <a href="#" className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-text-muted hover:text-brand-text hover:border-accent-blue hover:bg-accent-blue/10 transition-all">
+                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-text-muted hover:text-brand-text hover:border-accent-blue hover:bg-accent-blue/10 transition-all">
                                 <Linkedin className="w-4 h-4" />
                             </a>
-                            <a href="#" className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-text-muted hover:text-brand-text hover:border-accent-blue hover:bg-accent-blue/10 transition-all">
+                            <a href="https://github.com/maikus-ai" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-brand-border flex items-center justify-center text-brand-text-muted hover:text-brand-text hover:border-accent-blue hover:bg-accent-blue/10 transition-all">
                                 <Github className="w-4 h-4" />
                             </a>
                         </div>
@@ -50,12 +50,12 @@ const Footer = () => {
                         <ul className="flex flex-col gap-4">
                             <li><Link to="/contact" className="text-brand-text-muted hover:text-accent-blue transition-colors">Contact Us</Link></li>
                             <li>
-                                <a href="mailto:hello@neuroflowai.com" className="flex items-center gap-2 text-brand-text-muted hover:text-accent-blue transition-colors">
+                                <a href="mailto:maikus.aisolutions@gmail.com" className="flex items-center gap-2 text-brand-text-muted hover:text-accent-blue transition-colors">
                                     <Mail className="w-4 h-4" />
-                                    maikusai@gmail.com
+                                    maikus.aisolutions@gmail.com
                                 </a>
                             </li>
-                            <li><a href="#" className="text-brand-text-muted hover:text-accent-blue transition-colors">Book a Strategy Call</a></li>
+                            <li><Link to="/contact" className="text-brand-text-muted hover:text-accent-blue transition-colors">Book a Strategy Call</Link></li>
                         </ul>
                     </div>
 

@@ -544,7 +544,7 @@ const AIVoiceReceptionist = () => {
                     <div className="flex justify-center mb-6">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-green/10 border border-accent-green/40 dark:text-accent-green text-xs font-bold tracking-widest uppercase mb-2">
                             <ShieldCheck className="w-4 h-4 shrink-0" />
-                            <DecryptedText text="HIPAA-Compliant: All patient data is fully encrypted." animateOn="view" speed={60} maxIterations={15} />
+                            <DecryptedText text="HIPAA-Protected" animateOn="view" speed={50} maxIterations={4} />
                         </div>
                     </div>
 
@@ -608,7 +608,7 @@ const AIVoiceReceptionist = () => {
                                     <div className="flex items-center justify-center w-full min-h-[40px] mb-8">
                                         <div className="flex items-center gap-2 text-accent-green text-xs font-bold bg-accent-green/10 px-4 py-2 rounded-full shadow-sm text-center">
                                             <ShieldCheck className="w-4 h-4 shrink-0" />
-                                            <DecryptedText text="Live Audio Stream: Fully encrypted and privately processed." animateOn="view" speed={40} maxIterations={12} />
+                                            <DecryptedText text="Live Audio Stream: Fully encrypted" animateOn="view" speed={40} maxIterations={2} />
                                         </div>
                                     </div>
                                     <button onClick={(e: any) => {e.preventDefault(); setDemoState('idle');}} className="btn-secondary py-2 px-6 text-sm flex items-center gap-2 text-brand-text"><Phone className="w-4 h-4"/> End Call Simulation</button>
@@ -998,7 +998,7 @@ const AIVoiceReceptionist = () => {
             <div className="container mx-auto px-6 mt-16 mb-8 text-center flex items-center justify-center">
                 <div className="flex items-center gap-2 dark:text-accent-green text-sm font-bold bg-accent-green/5 border border-accent-green/20 px-6 py-3 rounded-full">
                     <ShieldCheck className="w-5 h-5 shrink-0" />
-                    <DecryptedText text="HIPAA-Compliant: All patient data is encrypted locally and completely safe." animateOn="view" speed={60} maxIterations={15} />
+                    <DecryptedText text="Data Safe with HIPAA" animateOn="view" speed={60} maxIterations={3} />
                 </div>
             </div>
 

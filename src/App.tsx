@@ -8,6 +8,9 @@ import Services from './pages/Services';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 import AIEmailAutomation from './forms/AIEmailAutomation';
 import LeadGenerationSystems from './forms/LeadGenerationSystems';
 import AIChatbots from './forms/AIChatbots';
@@ -52,6 +55,9 @@ function AnimatedRoutes() {
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
+        <Route path="/blog/:id" element={<PageTransition><BlogPost /></PageTransition>} />
+        <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
+        <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
         <Route path="/services/ai-email-automation" element={<PageTransition><AIEmailAutomation /></PageTransition>} />
         <Route path="/services/leadgen" element={<PageTransition><LeadGenerationSystems /></PageTransition>} />
         <Route path="/services/chatbots" element={<PageTransition><AIChatbots /></PageTransition>} />
