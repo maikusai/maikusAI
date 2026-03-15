@@ -347,6 +347,7 @@ const AIVoiceReceptionist = () => {
           <!-- Header Section -->
           <tr>
             <td class="content-padding" style="padding:40px 40px 30px;text-align:center;border-bottom:1px solid #f0f0f5;">
+              <img src="https://maikusai.onrender.com/logotransparent.png" alt="Maikus AI Logo" style="display:block;margin:0 auto 20px auto;max-width:150px;width:100%;height:auto;" />
               <p style="margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7c3aed;">Maikus AI Solutions</p>
               <h1 class="header-title" style="margin:0 0 12px;font-size:28px;font-weight:800;color:#111827;line-height:1.2;">Request Received</h1>
               <p style="margin:0;font-size:16px;color:#4b5563;">Hi ${clientName}, we've received your request for an AI Receptionist.</p>

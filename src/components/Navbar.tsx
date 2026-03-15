@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, BrainCircuit, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import logoUrl from '../assets/logotransparent.png';
 
 const Navbar = ({ theme, toggleTheme }: { theme: string; toggleTheme: () => void }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -31,15 +32,7 @@ const Navbar = ({ theme, toggleTheme }: { theme: string; toggleTheme: () => void
             <div className="container mx-auto px-6 lg:px-12 flex justify-between items-center">
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-2 group">
-                    <motion.div
-                        whileHover={{ rotate: 180 }}
-                        transition={{ duration: 0.5 }}
-                        className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-accent-blue to-accent-purple p-0.5 relative z-10"
-                    >
-                        <div className="w-full h-full bg-brand-text rounded-xl flex items-center justify-center">
-                            <BrainCircuit className="w-6 h-6 text-brand-bg" />
-                        </div>
-                    </motion.div>
+                    <img src={logoUrl} alt="Maikus AI Logo" className="h-10 w-auto object-contain" />
                     <span className="text-xl font-bold tracking-tight text-brand-text">
                         Maikus <span className="text-gradient">AI</span>
                     </span>

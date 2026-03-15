@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { BrainCircuit, Twitter, Linkedin, Github, Mail } from 'lucide-react';
+import { Twitter, Linkedin, Github, Mail } from 'lucide-react';
+import logoUrl from '../assets/logotransparent.png';
 
 const Footer = () => {
     return (
@@ -9,11 +10,7 @@ const Footer = () => {
 
                     <div className="col-span-1 md:col-span-2">
                         <Link to="/" className="flex items-center gap-2 mb-6">
-                            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-tr from-accent-blue to-accent-purple p-[1px]">
-                                <div className="w-full h-full bg-brand-bg rounded-lg flex items-center justify-center">
-                                    <BrainCircuit className="w-4 h-4 text-brand-text" />
-                                </div>
-                            </div>
+                            <img src={logoUrl} alt="Maikus AI Logo" className="h-8 w-auto object-contain" />
                             <span className="text-xl font-bold tracking-tight text-brand-text">
                                 Maikus <span className="text-gradient">AI</span>
                             </span>
