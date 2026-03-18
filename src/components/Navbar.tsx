@@ -22,6 +22,7 @@ const Navbar = ({ theme, toggleTheme }: { theme: string; toggleTheme: () => void
     const navLinks = [
         { name: 'Home', path: '/' },
         { name: 'AI Receptionist', path: '/services/ai-voice-receptionist' },
+        { name: 'Dashboard', path: '/dashboard' },
         { name: 'Pricing', path: '/pricing' },
         { name: 'Blog', path: '/blog' },
         { name: 'About', path: '/about' }

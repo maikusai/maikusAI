@@ -640,7 +640,6 @@ const AIVoiceReceptionist = () => {
                                             <DecryptedText text="Live Audio Stream: Fully encrypted" animateOn="view" speed={40} maxIterations={2} />
                                         </div>
                                     </div>
-                                    <button onClick={(e: any) => {e.preventDefault(); setDemoState('idle');}} className="btn-secondary py-2 px-6 text-sm flex items-center gap-2 text-brand-text"><Phone className="w-4 h-4"/> End Call Simulation</button>
                                 </motion.div>
                             )}
                         </AnimatePresence>

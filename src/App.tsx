@@ -19,6 +19,7 @@ import AutomationWorkflows from './forms/AutomationWorkflows';
 import CustomAIDevelopment from './forms/CustomAIDevelopment';
 import AIVoiceReceptionist from './forms/AIVoiceReceptionist';
 import Pricing from './pages/Pricing';
+import Dashboard from './pages/Dashboard';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -66,6 +67,7 @@ function AnimatedRoutes() {
         <Route path="/services/custom" element={<PageTransition><CustomAIDevelopment /></PageTransition>} />
         <Route path="/services/ai-voice-receptionist" element={<PageTransition><AIVoiceReceptionist /></PageTransition>} />
         <Route path="/pricing" element={<PageTransition><Pricing /></PageTransition>} />
+        <Route path="/dashboard" element={<PageTransition><Dashboard /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   );
