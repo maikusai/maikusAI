@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { supabase } from '../lib/supabaseClient';
 import { Phone, Calendar, MessageSquare, AlertCircle, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -101,9 +102,86 @@ const Dashboard: React.FC = () => {
         return <span className="bg-gray-500/10 text-gray-400 px-2 py-0.5 rounded text-xs border border-gray-500/20">Neutral</span>;
     };
 
+    const modalContent = selectedCall ? (
+        <AnimatePresence>
+            <div className="fixed inset-0 flex items-center justify-center p-2 sm:p-4" style={{ zIndex: 99999 }}>
+                <motion.div
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    className="absolute inset-0"
+                    style={{ backgroundColor: 'rgba(3,5,14,0.97)', backdropFilter: 'blur(12px)' }}
+                    onClick={() => setSelectedCall(null)}
+                />
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.96, y: 24 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.96, y: 24 }}
+                    transition={{ type: 'spring', duration: 0.35, bounce: 0.1 }}
+                    className="relative w-full max-w-3xl rounded-2xl p-4 sm:p-6 md:p-8 overflow-y-auto"
+                    style={{ backgroundColor: '#0B0F19', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 0 60px rgba(0,0,0,0.9)', maxHeight: '92vh', zIndex: 100000 }}
+                >
+                    {/* Close Button */}
+                    <button
+                        onClick={() => setSelectedCall(null)}
+                        className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-full text-brand-text-muted hover:text-white hover:bg-white/10 transition-all"
+                        style={{ zIndex: 100001 }}
+                    >
+                        <XCircle className="w-5 h-5 sm:w-6 sm:h-6" />
+                    </button>
+
+                    {/* Header */}
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-5 pr-10">
+                        <div>
+                            <h2 className="text-lg sm:text-2xl font-bold text-white break-all leading-snug">{selectedCall.phone_number}</h2>
+                            <p className="text-brand-text-muted text-xs sm:text-sm mt-1">{new Date(selectedCall.created_at).toLocaleString()}</p>
+                        </div>
+                        <div className="shrink-0"><SentimentBadge sentiment={selectedCall.sentiment} /></div>
+                    </div>
+
+                    {/* Body sections */}
+                    <div className="space-y-4 sm:space-y-5">
+
+                        {/* Call Summary */}
+                        <div>
+                            <h3 className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Call Summary</h3>
+                            <div className="rounded-xl p-3 sm:p-4 text-sm text-brand-text-muted/90 leading-relaxed break-words" style={{ backgroundColor: '#0f1524', border: '1px solid rgba(255,255,255,0.07)' }}>
+                                {selectedCall.call_summary || 'No summary available.'}
+                            </div>
+                        </div>
+
+                        {/* Extracted Variables */}
+                        {selectedCall.extracted_variables && Object.keys(selectedCall.extracted_variables).length > 0 && (
+                            <div>
+                                <h3 className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Extracted Information</h3>
+                                <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#0f1524', border: '1px solid rgba(255,255,255,0.07)' }}>
+                                    {Object.entries(selectedCall.extracted_variables).map(([k, v], i) => (
+                                        <div key={k} className={`flex flex-col sm:flex-row sm:items-start px-4 py-2.5 gap-1 sm:gap-4 ${ i % 2 === 0 ? 'bg-white/[0.02]' : '' }`}>
+                                            <span className="text-xs sm:text-sm text-brand-text-muted/60 sm:w-2/5 capitalize shrink-0 font-medium">{k.replace(/_/g, ' ')}</span>
+                                            <span className="text-xs sm:text-sm text-white font-semibold sm:w-3/5 break-words">{String(v)}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Full Transcript */}
+                        {selectedCall.full_conversation && (
+                            <div>
+                                <h3 className="text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-widest mb-2">Full Transcript</h3>
+                                <div className="rounded-xl p-3 sm:p-4 text-[11px] sm:text-xs font-mono break-words whitespace-pre-wrap leading-relaxed" style={{ backgroundColor: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.55)' }}>
+                                    {typeof selectedCall.full_conversation === 'object'
+                                        ? JSON.stringify(selectedCall.full_conversation, null, 2)
+                                        : selectedCall.full_conversation}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </motion.div>
+            </div>
+        </AnimatePresence>
+    ) : null;
+
     return (
-        <div className="pt-24 pb-20 min-h-screen bg-brand-bg relative overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <React.Fragment>
+        <div className="pt-24 pb-20 min-h-screen bg-brand-bg">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 border-b border-brand-border pb-6">
                     <div>
                         <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Live AI Call Dashboard</h1>
@@ -144,7 +222,7 @@ const Dashboard: React.FC = () => {
                                 ) : calls.map((log) => (
                                     <div key={log.id} 
                                         onClick={() => setSelectedCall(log)}
-                                        className="glass-card p-6 border-l-4 border-l-accent-blue cursor-pointer hover:bg-brand-bg/50 transition-colors">
+                                        className="bg-brand-bg border border-brand-border/50 rounded-xl p-5 md:p-6 border-l-4 border-l-accent-blue cursor-pointer hover:bg-brand-bg-alt transition-colors shadow-lg">
                                         <div className="flex flex-wrap justify-between items-start gap-4 mb-4">
                                             <div>
                                                 <h3 className="font-bold text-lg text-white flex items-center gap-2">
@@ -176,7 +254,7 @@ const Dashboard: React.FC = () => {
                                         <p className="text-brand-text-muted">No appointments booked yet.</p>
                                     </div>
                                 ) : appointments.map((appt) => (
-                                    <div key={appt.id} className="glass-card p-6 border-t-4 border-t-purple-500">
+                                    <div key={appt.id} className="bg-brand-bg border border-brand-border/50 rounded-xl p-5 md:p-6 border-t-4 border-t-purple-500 shadow-lg">
                                         <h3 className="font-bold text-lg text-white mb-1">{appt.patient_name || 'Unknown Patient'}</h3>
                                         <p className="font-mono text-sm text-purple-400 mb-4">{appt.phone_number}</p>
                                         
@@ -210,7 +288,7 @@ const Dashboard: React.FC = () => {
                                         <p className="text-brand-text-muted">No general queries logged.</p>
                                     </div>
                                 ) : queries.map((query) => (
-                                    <div key={query.id} className={`glass-card p-6 border-l-4 ${query.category === 'Emergency' ? 'border-l-red-500 bg-red-500/5' : 'border-l-orange-500'}`}>
+                                    <div key={query.id} className={`bg-brand-bg border border-brand-border/50 rounded-xl p-5 md:p-6 shadow-lg border-l-4 ${query.category === 'Emergency' ? 'border-l-red-500 bg-red-500/5' : 'border-l-orange-500'}`}>
                                         <div className="flex justify-between items-start mb-2">
                                             <div>
                                                 <h3 className="font-bold text-lg text-white">{query.patient_name || 'Anonymous Caller'}</h3>
@@ -233,71 +311,12 @@ const Dashboard: React.FC = () => {
                     </AnimatePresence>
                 )}
 
-                {/* Detailed View Modal */}
-                <AnimatePresence>
-                    {selectedCall && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                            <motion.div 
-                                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} 
-                                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-                                onClick={() => setSelectedCall(null)}
-                            />
-                            <motion.div 
-                                initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                                className="glass-card p-6 md:p-8 relative z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
-                            >
-                                <button onClick={() => setSelectedCall(null)} className="absolute top-4 right-4 text-brand-text-muted hover:text-white transition-colors">
-                                    <XCircle className="w-6 h-6" />
-                                </button>
-                                
-                                <div className="flex justify-between items-start mb-6 pr-8">
-                                    <div>
-                                        <h2 className="text-2xl font-bold text-white mb-1">{selectedCall.phone_number}</h2>
-                                        <p className="text-brand-text-muted text-sm">{new Date(selectedCall.created_at).toLocaleString()}</p>
-                                    </div>
-                                    <SentimentBadge sentiment={selectedCall.sentiment} />
-                                </div>
-                                
-                                <div className="space-y-6">
-                                    {/* Summary */}
-                                    <div>
-                                        <h3 className="text-sm font-semibold text-brand-text uppercase tracking-wider mb-2">Call Summary</h3>
-                                        <div className="bg-brand-bg rounded-lg p-4 border border-brand-border/50 text-sm text-brand-text-muted/90 leading-relaxed">
-                                            {selectedCall.call_summary || 'No summary available.'}
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Extracted Variables */}
-                                    {selectedCall.extracted_variables && Object.keys(selectedCall.extracted_variables).length > 0 && (
-                                        <div>
-                                            <h3 className="text-sm font-semibold text-brand-text uppercase tracking-wider mb-2">Extracted Information</h3>
-                                            <div className="bg-brand-bg rounded-lg p-4 border border-brand-border/50 flex flex-col gap-2">
-                                                {Object.entries(selectedCall.extracted_variables).map(([k, v]) => (
-                                                    <div key={k} className="flex flex-col sm:flex-row sm:items-center py-1 border-b border-brand-border/30 last:border-0">
-                                                        <span className="text-xs text-brand-text-muted block sm:inline-block sm:w-1/3 capitalize">{k.replace('_', ' ')}:</span>
-                                                        <span className="text-sm text-brand-text font-medium">{String(v)}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Full Conversation */}
-                                    {selectedCall.full_conversation && (
-                                        <div>
-                                            <h3 className="text-sm font-semibold text-brand-text uppercase tracking-wider mb-2">Full Transcript</h3>
-                                            <div className="bg-brand-bg rounded-lg p-4 border border-brand-border/50 text-xs text-brand-text-muted/80 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
-                                                {typeof selectedCall.full_conversation === 'object' ? JSON.stringify(selectedCall.full_conversation, null, 2) : selectedCall.full_conversation}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </motion.div>
-                        </div>
-                    )}
-                </AnimatePresence>
+                {/* Modal is rendered via Portal — see ReactDOM.createPortal below */}
             </div>
         </div>
+        {/* Portal: renders modal directly into document.body to escape stacking context */}
+        {ReactDOM.createPortal(modalContent, document.body)}
+    </React.Fragment>
     );
 };
 

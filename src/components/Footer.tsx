@@ -5,7 +5,7 @@ import logoUrl from '../assets/logotransparent.png';
 const Footer = () => {
     return (
         <footer className="bg-brand-bg relative border-t border-brand-border pt-20 pb-10">
-            <div className="container mx-auto px-6 lg:px-12 relative z-10">
+            <div className="container mx-auto px-6 lg:px-12 relative">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
 
                     <div className="col-span-1 md:col-span-2">
