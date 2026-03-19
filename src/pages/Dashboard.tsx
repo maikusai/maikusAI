@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { supabase } from '../lib/supabaseClient';
-import { Phone, Calendar, MessageSquare, AlertCircle, Clock, CheckCircle2, XCircle } from 'lucide-react';
+import { Phone, Calendar, MessageSquare, AlertCircle, Clock, CheckCircle2, XCircle, BarChart2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import DashboardAnalytics from '../components/DashboardAnalytics';
 
 type CallData = {
     id: string;
@@ -37,7 +38,7 @@ type QueryData = {
 };
 
 const Dashboard: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<'all' | 'appointments' | 'queries'>('all');
+    const [activeTab, setActiveTab] = useState<'all' | 'appointments' | 'queries' | 'analytics'>('all');
     const [calls, setCalls] = useState<CallData[]>([]);
     const [appointments, setAppointments] = useState<AppointmentData[]>([]);
     const [queries, setQueries] = useState<QueryData[]>([]);
@@ -195,15 +196,18 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="flex gap-4 mb-8 overflow-x-auto pb-2 scrollbar-hide">
-                    <button onClick={() => setActiveTab('all')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl border transition-all shrink-0 ${activeTab === 'all' ? 'bg-accent-blue/10 border-accent-blue text-accent-blue' : 'bg-brand-bg-alt border-brand-border text-brand-text-muted hover:border-brand-border/80 hover:text-brand-text'}`}>
+                <div className="flex gap-3 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+                    <button onClick={() => setActiveTab('all')} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all shrink-0 text-sm ${activeTab === 'all' ? 'bg-accent-blue/10 border-accent-blue text-accent-blue' : 'bg-brand-bg-alt border-brand-border text-brand-text-muted hover:border-brand-border/80 hover:text-brand-text'}`}>
                         <Phone className="w-4 h-4" /> All Call Logs ({calls.length})
                     </button>
-                    <button onClick={() => setActiveTab('appointments')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl border transition-all shrink-0 ${activeTab === 'appointments' ? 'bg-purple-500/10 border-purple-500 text-purple-400' : 'bg-brand-bg-alt border-brand-border text-brand-text-muted hover:border-brand-border/80 hover:text-brand-text'}`}>
+                    <button onClick={() => setActiveTab('appointments')} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all shrink-0 text-sm ${activeTab === 'appointments' ? 'bg-purple-500/10 border-purple-500 text-purple-400' : 'bg-brand-bg-alt border-brand-border text-brand-text-muted hover:border-brand-border/80 hover:text-brand-text'}`}>
                         <Calendar className="w-4 h-4" /> Appointments ({appointments.length})
                     </button>
-                    <button onClick={() => setActiveTab('queries')} className={`flex items-center gap-2 px-5 py-2.5 rounded-xl border transition-all shrink-0 ${activeTab === 'queries' ? 'bg-orange-500/10 border-orange-500 text-orange-400' : 'bg-brand-bg-alt border-brand-border text-brand-text-muted hover:border-brand-border/80 hover:text-brand-text'}`}>
+                    <button onClick={() => setActiveTab('queries')} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all shrink-0 text-sm ${activeTab === 'queries' ? 'bg-orange-500/10 border-orange-500 text-orange-400' : 'bg-brand-bg-alt border-brand-border text-brand-text-muted hover:border-brand-border/80 hover:text-brand-text'}`}>
                         <MessageSquare className="w-4 h-4" /> Queries & Emergencies ({queries.length})
+                    </button>
+                    <button onClick={() => setActiveTab('analytics')} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all shrink-0 text-sm ${activeTab === 'analytics' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'bg-brand-bg-alt border-brand-border text-brand-text-muted hover:border-brand-border/80 hover:text-brand-text'}`}>
+                        <BarChart2 className="w-4 h-4" /> Analytics
                     </button>
                 </div>
 
@@ -312,6 +316,11 @@ const Dashboard: React.FC = () => {
                 )}
 
                 {/* Modal is rendered via Portal — see ReactDOM.createPortal below */}
+                {activeTab === 'analytics' && (
+                    <motion.div key="analytics" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                        <DashboardAnalytics calls={calls} appointments={appointments} queries={queries} />
+                    </motion.div>
+                )}
             </div>
         </div>
         {/* Portal: renders modal directly into document.body to escape stacking context */}
